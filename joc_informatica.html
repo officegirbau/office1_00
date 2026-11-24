@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El joc de la informàtica bàsica</title>
+<style>
+:root{--bg:#eaf1fb;--card:#fff;--ink:#1c2a44;--suau:#5a6b87;--blau:#1663c7;--blau-kl:#0f4da0;
+--ok:#157a3d;--ok-kl:#e4f5e9;--err:#b3401e;--err-kl:#ffe9e0;--info:#8a6d1a;--info-kl:#fff6da}
+*{box-sizing:border-box}
+html{font-size:20px}
+html.xx{font-size:26px}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+button{font-family:inherit;cursor:pointer}
+.wrap{max-width:1050px;margin:0 auto;padding:18px 16px 60px}
+h1{font-size:1.7rem;margin:.2em 0 .1em;text-align:center}
+.sub{color:var(--suau);text-align:center;font-size:1.02rem;margin-bottom:18px}
+.tarja{background:var(--card);border:2px solid #d5e0f2;border-radius:18px;padding:20px 22px;box-shadow:0 3px 10px rgba(25,50,90,.06)}
+.tarja h2{margin:.1em 0 .4em;font-size:1.25rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:none;border-radius:16px;
+padding:14px 26px;font-size:1.08rem;font-weight:600;background:var(--blau);color:#fff;transition:transform .08s,background .15s}
+.btn:hover{background:var(--blau-kl)} .btn:active{transform:scale(.97)}
+.btn.sec{background:#e3ebf8;color:var(--blau-kl)} .btn.sec:hover{background:#d3e0f5}
+.btn.groc{background:#f8c94b;color:#5c4300} .btn.groc:hover{background:#f0ba26}
+.marge-men{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin-top:14px}
+.bloc{display:flex;gap:14px;align-items:center;text-align:left;background:var(--card);border:2px solid #d5e0f2;
+border-radius:16px;padding:14px 16px;font-size:1.03rem;font-weight:600;color:var(--ink);transition:border-color .15s,transform .08s}
+.bloc:hover{border-color:var(--blau);transform:translateY(-2px)}
+.bloc .emo{font-size:2rem}
+.bloc small{display:block;color:var(--suau);font-weight:400;font-size:.82rem}
+.xifra{display:inline-block;background:#eef4fd;border-radius:999px;padding:2px 12px;color:var(--blau-kl);font-size:.85rem;font-weight:600;margin-top:4px}
+.cab{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+.cab .fores{flex:1;min-width:220px}
+.barra{height:16px;background:#dbe6f6;border-radius:999px;overflow:hidden}
+.barra div{height:100%;background:linear-gradient(90deg,#2b86e0,#157a3d);transition:width .3s}
+.etq{font-size:.95rem;color:var(--suau);margin-bottom:5px;display:flex;justify-content:space-between;gap:10px}
+.instr{display:flex;gap:14px;align-items:flex-start}
+.instr .n{min-width:52px;font-weight:800;background:#eef4fd;border-radius:12px;padding:8px 14px;color:#1663c7;text-align:center}
+.instr p{margin:0;font-size:1.16rem;font-weight:600}
+.accions{display:flex;gap:10px;margin:12px 0 4px;flex-wrap:wrap}
+.ajuda-txt{display:none;margin-top:10px;background:var(--info-kl);border-radius:12px;padding:12px 16px;color:#6b4e00;font-weight:600}
+.ajuda-txt.visible{display:block}
+.parp{animation:parp 1s infinite}
+@keyframes parp{0%,100%{box-shadow:0 0 0 0 rgba(248,201,75,.9)}50%{box-shadow:0 0 0 10px rgba(248,201,75,0)}}
+.fb{margin:12px 0 0;padding:12px 16px;border-radius:14px;font-weight:600;font-size:1.05rem}
+.fb.ok{background:var(--ok-kl);color:var(--ok)}
+.fb.err{background:var(--err-kl);color:var(--err)}
+.fb.info{background:var(--info-kl);color:var(--info)}
+.escenari{background:var(--card);border:2px solid #d5e0f2;border-radius:18px;padding:22px;margin-top:12px}
+.sx{animation:sx .45s}
+@keyframes sx{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.bravo{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(20,40,70,.35);z-index:50;pointer-events:none;opacity:0;transition:opacity .25s}
+.bravo.on{opacity:1}
+.bravo>div{background:#fff;border-radius:24px;padding:34px 54px;text-align:center;font-size:1.7rem;font-weight:800;color:var(--ok)}
+.bravo .c{font-size:3.2rem;display:block;margin-bottom:6px}
+.pant{position:relative;width:100%;max-width:880px;margin:0 auto;height:440px;border-radius:16px;overflow:hidden;
+border:6px solid #243654;background:linear-gradient(135deg,#1e4f9c,#3f8ae0 55%,#7fbff2)}
+.pant.gris{background:linear-gradient(135deg,#33507c,#5f85bd)}
+.fons{position:absolute;inset:0}
+.cwriter .icn{padding-top:10px}
+.geleria{position:absolute;top:16px;left:10px;display:flex;flex-direction:column;gap:12px;z-index:3}
+.icn{width:96px;text-align:center;color:#fff;font-size:.82rem;font-weight:600;padding:8px 2px;border-radius:10px;white-space:nowrap}
+.icn:hover{background:rgba(255,255,255,.18)}
+.icn .e{font-size:2.3rem;display:block;margin-bottom:2px;text-shadow:0 2px 5px rgba(0,0,30,.4)}
+.cub{display:inline-block;width:44px;height:44px;border-radius:9px;line-height:44px;font-size:1.4rem}
+.wic{background:#185abd;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800}
+.tasca{position:absolute;left:0;right:0;bottom:0;height:56px;background:rgba(240,246,255,.92);display:flex;align-items:center;gap:8px;padding:0 10px;z-index:5}
+.tb-ic{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.tb-ic:hover{background:#dbe7f8}
+.tb-cerca{background:#fff;border:2px solid #c3d2ea;border-radius:999px;height:40px;padding:0 18px;display:flex;align-items:center;gap:8px;color:var(--suau);font-size:.95rem;min-width:200px}
+.tb-rell{margin-left:auto;font-size:.95rem;text-align:center}
+.tb-usu{width:34px;height:34px;border-radius:50%;background:#f2b74a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.inic{position:absolute;bottom:66px;left:50%;transform:translateX(-50%);width:min(560px,92%);background:rgba(248,251,255,.98);
+border-radius:16px;box-shadow:0 10px 30px rgba(0,0,20,.4);padding:18px 22px;z-index:8}
+.inic .cap-i{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.inic .cap-cerca{background:#fff;border:2px solid #c3d2ea;border-radius:12px;padding:10px 14px;color:var(--suau);margin-bottom:14px}
+.g-ic{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ico-app{border-radius:12px;padding:10px 6px;text-align:center;font-size:.82rem;font-weight:600}
+.ico-app:hover{background:#e2edfd}
+.ico-app .e{font-size:1.7rem;display:block;margin-bottom:4px}
+.pi{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid #e3eaf5}
+.pop-apa{position:absolute;right:10px;bottom:110%;background:#fff;border-radius:10px;box-shadow:0 8px 22px rgba(0,0,20,.35);padding:6px;z-index:9;min-width:170px}
+.pop-apa div{padding:11px 16px;border-radius:8px;font-weight:600}
+.pop-apa div:hover{background:#e9f0fb}
+.mctx{position:absolute;background:#fff;border-radius:10px;box-shadow:0 8px 26px rgba(0,0,20,.4);padding:6px;z-index:20;min-width:230px}
+.mctx div{padding:10px 16px;border-radius:7px;font-size:.98rem;font-weight:600;display:flex;justify-content:space-between;gap:16px}
+.mctx div:hover{background:#e9f0fd}
+.fletxa{color:var(--suau)}
+.arro{cursor:grab}
+.arro.agaf{opacity:.35}
+.clon{position:fixed;z-index:99;pointer-events:none;opacity:.9;transform:translate(-50%,-50%);filter:drop-shadow(0 6px 10px rgba(0,0,30,.4))}
+.sobre-hi{outline:4px dashed #ffd23e;outline-offset:-4px}
+.fin{position:absolute;left:8%;right:8%;top:9%;bottom:14%;background:#fffbf4;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,20,.45);z-index:6;display:flex;flex-direction:column;overflow:hidden}
+.tit{height:46px;background:#dfe9f7;display:flex;align-items:center;gap:0;padding:0 4px;flex:none}
+.tit .txt{flex:1;font-size:.95rem;font-weight:600;padding-left:10px;color:#2c3e5d;white-space:nowrap;overflow:hidden}
+.ctrl{width:52px;height:46px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:700;color:#2c3e5d}
+.ctrl.x{color:#c0392b}
+.ctrl:hover{background:#c9d8ef}
+.corp{flex:1;padding:16px;display:flex;align-items:center;justify-content:center;color:#8195b5;font-size:1.1rem;font-weight:600}
+.tec{max-width:880px;margin:0 auto;background:#dde6f2;border-radius:16px;padding:14px;display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:7px}
+.tk{background:#fff;border:2px solid #b9c5d8;border-radius:8px;min-height:48px;display:flex;align-items:center;justify-content:center;
+font-size:.82rem;font-weight:700;color:#33455f;position:relative;user-select:none;text-align:center;padding:2px}
+.tk:hover{background:#eaf2ff;border-color:#7fa6dd}
+.tk .sup{position:absolute;top:2px;right:5px;font-size:.68rem;color:#7a8aa5}
+.tk.xic{font-size:.7rem}
+.ratolla{display:flex;justify-content:center;padding:10px 0}
+.rat-body{position:relative;width:190px;height:270px;background:#f2f5fa;border:4px solid #33455f;border-radius:90px 90px 34px 34px;overflow:hidden}
+.rat-b{position:absolute;top:0;bottom:0;width:50%;background:#dfe7f2;transition:background .15s}
+.rat-b:hover{background:#bcd2f0}
+.rat-esq{left:0;border-radius:86px 0 0 0}
+.rat-dta{right:0;border-radius:0 86px 0 0}
+.rat-rot{position:absolute;left:50%;transform:translateX(-50%);top:96px;width:20px;height:62px;background:#b9c9de;border:3px solid #33455f;border-radius:12px}
+.rat-div{position:absolute;left:50%;top:0;bottom:0;width:3px;background:#33455f;transform:translateX(-50%)}
+.rat-div2{position:absolute;left:0;right:0;top:158px;height:3px;background:#33455f}
+.torre{margin:0 auto;width:190px;background:#3a4b66;border-radius:12px;padding:18px 14px;smaxi:0}
+.tor-f{height:10px;border:3px solid #5c7194;border-radius:6px;margin-bottom:14px}
+.tor-ll{height:7px;width:34px;background:#57d977;border-radius:99px;margin-bottom:16px}
+.circ{width:44px;height:44px;border-radius:50%;border:3px solid #8ca2c4;background:#2b3a52;color:#eaf2ff;display:flex;align-items:center;justify-content:center;margin:10px auto}
+.circ svg{width:24px;height:24px}
+.circ:hover{background:#1f2d44}
+.tor-cd{width:88px;height:26px;border:3px solid #5c7194;border-radius:6px;margin-top:14px;display:flex;align-items:center;justify-content:center;color:#8ca2c4;font-size:.7rem}
+.rellotge{position:absolute;top:16%;left:0;right:0;text-align:center;color:#fff;font-size:3.2rem;font-weight:300;text-shadow:0 3px 10px rgba(0,0,30,.4)}
+.rellotge small{display:block;font-size:1.05rem}
+.usus{position:absolute;top:24%;left:0;right:0;display:flex;justify-content:center;gap:70px}
+.usu{text-align:center;color:#fff;padding:10px 16px;border-radius:12px;font-weight:600}
+.usu:hover{background:rgba(255,255,255,.15)}
+.usu .av{width:86px;height:86px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:2.4rem;font-weight:800;box-shadow:0 3px 12px rgba(0,0,30,.4)}
+.cad{position:absolute;inset:0;background:linear-gradient(135deg,#094d9e,#1a76d2);display:flex;align-items:center;padding-left:10%}
+.cad ul{list-style:none;margin:0;padding:0}
+.cad li{display:flex;align-items:center;gap:14px;color:#fff;font-size:1.25rem;font-weight:600;padding:13px 22px;border-radius:10px;margin:4px 0}
+.cad li:hover{background:rgba(255,255,255,.14)}
+.cad li span{font-size:1.5rem}
+.exp{position:absolute;inset:0;display:flex;flex-direction:column}
+.exp-cap{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#f2f6fd;border-bottom:1px solid #dfe7f3}
+.exp-cap .fla{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#5a6b87;font-size:1.1rem}
+.ruta{flex:1;background:#fff;border:2px solid #c3d2ea;border-radius:8px;display:flex;align-items:center;gap:6px;padding:4px 14px;font-weight:600;overflow:hidden;white-space:nowrap}
+.ruta b{font-weight:600} .ruta b:hover{background:#e2edfd;border-radius:6px}
+.sep-r{color:#8ca2c4}
+.exp-corp{flex:1;display:flex;min-height:0}
+.arbre{width:210px;background:#f8fafd;border-right:1px solid #e3eaf5;padding:10px 6px;overflow:auto;flex:none}
+.arbre div{padding:9px 12px;border-radius:8px;font-size:.95rem;font-weight:600;display:flex;gap:8px;align-items:center}
+.arbre div:hover{background:#e6eefa}
+.panell{flex:1;padding:16px;overflow:auto;position:relative}
+.ptu{display:inline-flex;flex-direction:column;align-items:center;width:104px;margin:6px;padding:9px 4px;border-radius:10px;font-size:.82rem;font-weight:600;text-align:center}
+.ptu:hover{background:#e9f1fd}
+.ptu .e{font-size:2.1rem;margin-bottom:4px}
+.tit-fin2{padding:6px 14px;background:#dfe9f7;font-weight:700;font-size:.95rem}
+.pnt{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff}
+.pnt-tit{height:44px;background:#dfe9f7;display:flex;align-items:center;padding:0 8px;gap:4px;flex:none}
+.pnd{font-weight:700;font-size:.95rem;padding:0 10px;color:#2c3e5d;display:flex;align-items:center;gap:8px}
+.pnt-flet{width:40px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.15rem}
+.pnt-flet:hover{background:#c9d8ef}
+.pnt-tabs{display:flex;gap:4px;padding:0 8px;background:#eef3fb;border-bottom:1px solid #dbe4f1}
+.pnt-tabs div{padding:9px 18px;font-weight:700;font-size:.92rem;border-radius:8px 8px 0 0;color:#2c3e5d}
+.pnt-tabs div:hover{background:#dbe7f8}
+.pnt-riba{display:flex;gap:26px;padding:12px 16px;background:#f6f9fe;border-bottom:2px solid #dde6f3;flex-wrap:wrap}
+.rib-h{font-size:.74rem;text-align:center;color:var(--suau);margin-top:5px;font-weight:600}
+.rib-filter{display:flex;gap:8px}
+.hin{width:64px;height:64px;background:#fff;border:2px solid #c3d2ea;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.5rem}
+.hin:hover{border-color:#2b86e0;background:#f2f8ff}
+.hin small{font-size:.6rem;color:var(--suau);font-weight:600;margin-top:2px}
+.paleta{display:flex;gap:5px;align-items:flex-end;padding-bottom:6px}
+.pal{width:26px;height:26px;border-radius:6px;border:2px solid rgba(0,0,50,.15)}
+.pal:hover{transform:scale(1.12)}
+.fulles{flex:1;background:#fff;border:2px solid #dde6f3;margin:14px 16px 16px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ful-s{max-width:560px;margin:0 auto;min-height:300px;box-shadow:0 3px 12px rgba(0,0,40,.15);padding:30px 34px;font-family:Calibri,Georgia,serif}
+.ful-s p{font-size:1rem;margin:0 0 14px;color:#222}
+.mdoc{flex:1;overflow:auto;padding:24px 34px;background:#f2f4f8}
+.ful-canvas{width:78%;height:86%;background:#fff;border:1px solid #e3eaf5;position:relative}
+.munt{position:absolute;bottom:0;left:0;right:0;height:52%;background:linear-gradient(135deg,#8fd48f,#57b657);clip-path:polygon(0 100%,28% 20%,52% 100%,70% 45%,100% 100%)}
+.sol{position:absolute;top:10%;right:12%;width:54px;height:54px;border-radius:50%;background:#ffd23e}
+.linia{position:absolute;top:16%;left:6%;width:44%;height:7px;background:#d0432f;border-radius:99px}
+.menu-arxiu{position:absolute;top:52px;left:6px;background:#fff;border-radius:10px;box-shadow:0 10px 26px rgba(0,0,30,.35);padding:8px;z-index:30;min-width:270px}
+.menu-arxiu div{padding:12px 18px;border-radius:8px;font-weight:600;display:flex;gap:0;align-items:center;flex-direction:column;align-items:flex-start}
+.menu-arxiu div:hover{background:#e9f0fd}
+.menu-arxiu div small{display:block;color:var(--suau);font-weight:400}
+.subm{position:absolute;left:104%;top:-8px;background:#fff;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,40,.3);padding:6px;min-width:190px}
+.arxiu-w{width:30px;height:38px;border-radius:4px;background:#185abd;color:#fff;font-size:.8rem;display:flex;align-items:center;justify-content:center}
+.paper{max-width:640px;margin:0 auto;text-align:center}
+.paper .bloq-txt{background:#fffdf6;border:2px solid #ead9a8;border-radius:14px;padding:22px 26px;font-size:1.8rem;font-weight:800;letter-spacing:1px;color:#4a3508;margin-bottom:14px}
+.paper input{width:100%;font-size:1.7rem;padding:14px 18px;border:3px solid #c3d2ea;border-radius:12px;text-align:center;margin-bottom:14px}
+.paper input:focus{outline:none;border-color:#2b86e0}
+.ets{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ets span{background:#eef4fd;color:#28518f;border-radius:999px;padding:7px 16px;font-size:.9rem;font-weight:600}
+.usu-chip{display:inline-flex;align-items:center;gap:10px;background:#e2edfd;border-radius:999px;padding:6px 18px 6px 6px;font-weight:700;margin-bottom:16px}
+.usu-chip .av{width:40px;height:40px;border-radius:50%;background:#2b86e0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.estres{font-size:2.6rem;text-align:center;letter-spacing:8px;margin:6px 0}
+.res-gran{text-align:center;font-size:1.35rem;font-weight:800;margin:10px 0}
+.llista-blocs{display:grid;gap:8px;margin-top:14px;text-align:left}
+.llista-blocs div{display:flex;justify-content:space-between;gap:12px;padding:10px 16px;background:#f2f6fd;border-radius:10px;font-weight:600}
+.pist{animation:pist 1.1s 3}
+@keyframes pist{0%,100%{box-shadow:0 0 0 0 rgba(43,134,224,0)}50%{box-shadow:0 0 0 8px rgba(43,134,224,.55);background:#fff3c2}}
+.hidden{display:none}
+.peu{margin-top:26px;text-align:center;color:var(--suau);font-size:.9rem}
+</style>
+</head>
+<body>
+<div id="app" class="wrap"></div>
+<div id="bravo" class="bravo">
+  <div><span class="c">✔️</span><span id="brv-t">Molt bé!</span></div>
+</div>
+<script>
+"use strict";
+var APP=document.getElementById('app');
+var BRAVO=document.getElementById('bravo');
+var BRVT=document.getElementById('brv-t');
+var ELOGIS=['Molt bé!','Fantàstic!','Perfecte!','Molt ben fet!','Excel·lent!'];
+var BLOCS=[
+ {id:'T1',emo:'🔌',nom:'1. Engegar i entrar',des:'El botó d\'encesa, l\'usuari, la contrasenya i apagar'},
+ {id:'T2',emo:'🖱️',nom:'2. El ratolí',des:'Botons, doble clic, clic dret i arrossegar'},
+ {id:'T3',emo:'⌨️',nom:'3. El teclat',des:'Majúscules, accents, l\'arrova i esborrar'},
+ {id:'T4',emo:'🪟',nom:'4. Les finestres',des:'Minimitzar, maximitzar, tancar i moure'},
+ {id:'T5',emo:'🔍',nom:'5. Buscar programes',des:'El botó Inici i el quadre de cerca'},
+ {id:'T6',emo:'📁',nom:'6. L\'Explorador d\'Arxius',des:'Carpetes, la ruta i la Paperera'},
+ {id:'T7',emo:'🎨',nom:'7. El Paint',des:'Eines de dibuix i guardar el treball'},
+ {id:'T8',emo:'📝',nom:'8. El Word',des:'Escriure, guardar i retrobar documents'}
+];
+var Llista=[],iQ=0,loked=false,errQ=0;
+
+function $(s,c){return (c||document).querySelector(s)}
+function msgOk(){return ELOGIS[iQ%ELOGIS.length]}
+function so(tip){
+ try{
+  var AC=window.AudioContext||window.webkitAudioContext; if(!AC)return;
+  if(!window._ac)window._ac=new AC();
+  var ac=window._ac,o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime;
+  o.connect(g);g.connect(ac.destination);
+  if(tip==='ok'){o.type='sine';o.frequency.setValueAtTime(620,t);o.frequency.setValueAtTime(880,t+.13);}
+  else{o.type='triangle';o.frequency.setValueAtTime(190,t);}
+  g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(.12,t+.02);
+  g.gain.exponentialRampToValueAtTime(.001,t+(tip==='ok'?.35:.25));
+  o.start(t);o.stop(t+.4);
+ }catch(e){}
+}
+function parla(txt){
+ try{
+  if(!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(txt);
+  var vs=speechSynthesis.getVoices();
+  var v=null;
+  for(var i=0;i<vs.length;i++){if(/^ca/i.test(vs[i].lang)){v=vs[i];break}}
+  if(!v){for(var j=0;j<vs.length;j++){if(/^es/i.test(vs[j].lang)){v=vs[j];break}}}
+  if(v){u.voice=v;u.lang=v.lang}else{u.lang='ca-ES'}
+  u.rate=.92;speechSynthesis.speak(u);
+ }catch(e){}
+}
+function pwSvg(){
+ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 3v8"/><path d="M7.5 6.2a7 7 0 1 0 9 0"/></svg>';
+}
+function icoApl(emo,nom,atr){
+ return '<div class="icn" '+(atr||'')+'><span class="e">'+emo+'</span><span>'+nom+'</span></div>';
+}
+function sortida(t,pct){
+ return '<div class="cab"><div class="fores">'
+  +'<div class="etq"><span>'+t+'</span><span>'+pct+'% completat</span></div>'
+  +'<div class="barra"><div style="width:'+pct+'%"></div></div></div>'
+  +'<button class="btn sec" id="btnIni">☰ Inici</button></div>';
+}
+
+/* ---------- pantalles ---------- */
+function scrTorre(){
+ return '<div style="display:flex;align-items:center;justify-content:center;height:100%">'
+  +'<div class="torre">'
+  +'<div class="tor-f"></div><div class="tor-ll"></div>'
+  +'<div class="circ" data-wrong="Aquest botó obriria la unitat de disc. L\'encesa és el botó rodó que té el símbol del cercle amb la ratlla vertical.">≡</div>'
+  +'<div class="circ" data-ok="1"><span id="btn-on">'+pwSvg()+'</span></div>'
+  +'<div class="tor-cd">unitat de disc</div>'
+  +'</div></div>';
+}
+function scrBloq(){
+ return '<div class="fons" data-ok="1" style="cursor:pointer">'
+  +'<div class="rellotge">10:15<small>dimecres, 15 d\'octubre</small></div>'
+  +'<div style="position:absolute;bottom:18%;left:0;right:0;text-align:center;color:#fff;font-size:1.1rem;text-shadow:0 2px 6px rgba(0,0,30,.5)">Fes clic en qualsevol lloc per continuar…</div></div>';
+}
+function scrUsuaris(){
+ return '<div class="fons"><div class="usus">'
+  +'<div class="usu" data-wrong="Aquest és en Jordi. Entra amb el teu usuari: la Maria."><div class="av" style="background:#4a90d9">J</div>Jordi</div>'
+  +'<div class="usu" data-ok="1" id="usu-maria"><div class="av" style="background:#f2b74a">M</div>Maria</div>'
+  +'</div>'
+  +'<div class="tb-ic" data-wrong="Això apagaria l\'ordinador! Primer has d\'entrar amb el teu usuari." style="position:absolute;right:16px;bottom:12px;color:#fff">'+pwSvg()+'</div></div>';
+}
+function scrCAD(){
+ return '<div class="cad"><ul>'
+  +'<li data-ok="1" id="li-bloq"><span>🔒</span>Bloquejar</li>'
+  +'<li data-wrong="Canviar d\'usuari deixa la teva sessió oberta per a altres persones; per això hi ha Bloquejar."><span>👥</span>Canviar d\'usuari</li>'
+  +'<li data-wrong="Tancar la sessió et faria entrar de nou; bloquejar és més ràpid per tornar."><span>🚪</span>Tancar la sessió</li>'
+  +'<li data-wrong="Això serveix per canviar la contrasenya quan t\'ho hagin demanat."><span>🔑</span>Canviar una contrasenya</li>'
+  +'<li data-wrong="El Gestor de tasques serveix per tancar un programa encallat; no és el que volem."><span>📊</span>Administrador de tasques</li>'
+  +'</ul></div>';
+}
+function tasca(op){
+ op=op||{};
+ var cer=op.okCerca?'data-ok="1"':'data-wrong="Aquest és el quadre de cerca; és molt útil, però no és el que demanem en aquesta prova."';
+ var car=op.okCarp?'data-ok="1"':'data-wrong="Aquesta és la carpeta groga de l\'Explorador d\'Arxius; però no és el que demanem en aquesta prova."';
+ return '<div class="tasca">'
+  +'<div class="tb-ic" data-wrong="Aquest és el botó Inici (⊞); no és el que demanem en aquesta prova." title="Inici" style="color:#2b86e0">⊞</div>'
+  +'<div class="tb-cerca" '+cer+' title="Quadre de cerca">🔍 Cerca</div>'
+  +'<div class="tb-ic" data-wrong="Aquest és el navegador Edge; no és el que busquem." title="Edge">🌐</div>'
+  +'<div class="tb-ic" '+car+' title="Explorador d\'Arxius">📁</div>'
+  +'<div class="tb-ic" data-wrong="Aquest és el Paint; no és el que busquem." title="Paint">🎨</div>'
+  +'<div class="tb-ic" data-wrong="Aquest és el Bloc de notes; no és el que busquem." title="Bloc de notes">📝</div>'
+  +'<div class="tb-rell">10:15<br>15/10/2026</div></div>';
+}
+function iniNormal(okTotes){
+ return '<div class="inic"><div class="cap-cerca">🔍 Escriu aquí per buscar</div>'
+  +'<div class="cap-i"><b>Fixades</b><span id="totes-apl" '+(okTotes?'data-ok="1"':'data-wrong="Aquest enllaç és per veure TOTA la llista de programes; no és el que busquem ara."')+' style="font-weight:700;color:#1663c7">Totes les aplicacions ▸</span></div>'
+  +'<div class="g-ic">'
+  +'<div class="ico-app" data-wrong="Aquest és el navegador Edge; no és el que busquem."><span class="e">🌐</span>Edge</div>'
+  +'<div class="ico-app" data-wrong="Aquest és el correu; no és el que busquem."><span class="e">✉️</span>Correu</div>'
+  +'<div class="ico-app" data-wrong="Aquest és el calendari; no és el que busquem."><span class="e">📅</span>Calendari</div>'
+  +'<div class="ico-app" data-wrong="Aquesta és l\'aplicació de Fotos; no és el que busquem."><span class="e">🖼️</span>Fotos</div>'
+  +'<div class="ico-app" data-wrong="Aquest és el Paint; no és el que busquem ara."><span class="e">🎨</span>Paint</div>'
+  +'<div class="ico-app" data-wrong="Aquest és el Word; no és el que busquem ara."><span class="e"><span class="wic" style="width:40px;height:40px;border-radius:9px;font-size:1.25rem">W</span></span>Word</div>'
+  +'<div class="ico-app" data-wrong="Aquest és el Bloc de notes; no és el que busquem."><span class="e">📝</span>Bloc de notes</div>'
+  +'<div class="ico-app" data-wrong="Aquesta és la Configuració; no és el que busquem."><span class="e">⚙️</span>Configuració</div>'
+  +'<div class="ico-app" data-wrong="Aquest és l\'Explorador d\'Arxius; no és el que busquem ara."><span class="e">📁</span>Explorador</div>'
+  +'<div class="ico-app" data-wrong="Aquesta és la Calculadora; no és el que busquem."><span class="e">🧮</span>Calculadora</div>'
+  +'</div><div class="pi"><span class="tb-usu">M</span><b style="margin-right:auto">Maria</b>'
+  +'<div class="tb-ic" data-wrong="El botó d\'engegat és el que busquem en un altre moment; no és aquesta la prova.">⏻</div></div></div>';
+}
+function iniApa(op){
+ op=op||{};
+ var pw=op.okPower?'data-ok="1" id="pw-ic"':'data-wrong="En aquesta prova no busquem el botó d\'engegat: llegeix la instrucció."';
+ return '<div class="inic"><div class="cap-cerca">🔍 Escriu aquí per buscar</div>'
+  +'<div class="cap-i"><b>Fixades</b><span data-wrong="Aquest enllaç és per veure la llista de programes; no és el que busquem ara." style="font-weight:700;color:#1663c7">Totes les aplicacions ▸</span></div>'
+  +'<div class="g-ic">'
+  +'<div class="ico-app" data-wrong="Aquesta aplicació no és el que busquem; mira la cantonada de la DRETA de baix del menú."><span class="e">🌐</span>Edge</div>'
+  +'<div class="ico-app" data-wrong="Aquesta aplicació no és el que busquem; mira la cantonada de la DRETA de baix del menú."><span class="e">✉️</span>Correu</div>'
+  +'<div class="ico-app" data-wrong="Aquesta aplicació no és el que busquem; mira la cantonada de la DRETA de baix del menú."><span class="e">🎨</span>Paint</div>'
+  +'<div class="ico-app" data-wrong="Aquesta aplicació no és el que busquem; mira la cantonada de la DRETA de baix del menú."><span class="e">📁</span>Explorador</div>'
+  +'<div class="ico-app" data-wrong="Aquesta aplicació no és el que busquem; mira la cantonada de la DRETA de baix del menú."><span class="e">📝</span>Bloc de notes</div>'
+  +'<div class="ico-app" data-wrong="Aquesta aplicació no és el que busquem; mira la cantonada de la DRETA de baix del menú."><span class="e">⚙️</span>Configuració</div>'
+  +'</div><div class="pi"><span class="tb-usu">M</span><b style="margin-right:auto">Maria</b>'
+  +'<div style="position:relative"><div class="tb-ic" '+pw+'>⏻</div>'
+  +(op.okApa?'<div class="pop-apa" style="right:0;bottom:52px">'
+    +'<div data-wrong="Suspèn només apaga la pantalla i estalvia energia; però avui toca tancar-ho tot i marxar.">⏸ Suspèn</div>'
+    +'<div data-wrong="Reiniciar apaga i torna a engegar tot; només cal quan l\'ordinador va lent.">🔄 Reinicia</div>'
+    +'<div id="op-apa" data-ok="1" style="color:#c0392b">⏻ Apagar</div>'
+    +'</div>':'')
+  +'</div></div></div>';
+}
+function ctrlWin(op){
+ op=op||{};
+ var m1=op.okMin?'data-ok="1" id="w-min"':'data-wrong="El botó — AMAGA la finestra a la barra de baix sense tancar-la (Minimitzar); però no és aquest el que busquem en aquesta prova."';
+ var m2=op.okMax?'data-ok="1" id="w-max"':'data-wrong="El botó ▢ fa GRAN la finestra fins a ocupar tota la pantalla (Maximitzar); però no és aquest el que busquem en aquesta prova."';
+ var m3=op.okX?'data-ok="1" id="w-x"':'data-wrong="La X TANCARIA la finestra del tot! Compte: no és el que busquem en aquesta prova."';
+ var mt=op.okTit?'data-ok="1"':'data-wrong="En aquesta prova busquem un dels TRES BOTONS de la cantonada de la DRETA." ';
+ mt=op.okTit?'data-ok="1"':'data-wrong="En aquesta prova busquem un dels TRES BOTONS de la cantonada de la DRETA."';
+ return '<div class="fin"><div class="tit" '+mt+' id="tit-barra">'
+  +'<span class="txt">'+(op.nom||'Dibuix - Paint')+'</span>'
+  +'<div class="ctrl" '+m1+'>—</div>'
+  +'<div class="ctrl" '+m2+'>▢</div>'
+  +'<div class="ctrl x" '+m3+'>✕</div></div>'
+  +'<div class="corp">'+(op.cos||'Aquesta és la finestra del programa.')+'</div></div>';
+}
+function tk(txt,id,sup,estil){
+ var st=estil?' style="'+estil+'"':'';
+ return '<div class="tk" '+(id?' id="'+id+'"':'')+' data-wrong="Aquesta no és la tecla que busquem. Llegeix la instrucció una altra vegada."'+st+'>'
+  +(sup?'<span class="sup">'+sup+'</span>':'')+(txt||'')+'</div>';
+}
+function teclat2(){
+ var h='';
+ h+=tk('Esc')+tk('1','','!')+tk('2','','@')+tk('3','','·')+tk('4','')+tk('5','')+tk('6','')+tk('7','')+tk('8','')+tk('9','')+tk('0')
+   +tk('? \'')+tk('Supr','id-k-supr','', 'font-size:.72rem')+tk('← Retroceso','id-k-back','','grid-column:span 2;font-size:.72rem');
+ h+=tk('Tab','','','font-size:.72rem')+tk('Q')+tk('W')+tk('E')+tk('R')+tk('T')+tk('Y')+tk('U')+tk('I')+tk('O')+tk('P')+tk('Ç')
+   +tk('´ <span class="sup">`</span>','id-k-accent')
+   +tk('↵ Intro','id-k-intro','','grid-row:span 2;min-height:100px;align-self:stretch;height:100%');
+ h+=tk('Bloq Mayús','id-k-bloq','','grid-column:span 2;font-size:.72rem')
+   +tk('A')+tk('S')+tk('D')+tk('F')+tk('G')+tk('H')+tk('J')+tk('K')+tk('L')+tk('Ñ')+tk('º');
+ h+=tk('⇧ Shift','id-k-shift1','maj' ,'grid-column:span 2;font-size:.76rem')
+   +tk('Z')+tk('X')+tk('C')+tk('V')+tk('B')+tk('N')+tk('M')+tk(',')+tk('.')+tk('-')
+   +tk('⇧ Shift','id-k-shift2','','grid-column:span 2;font-size:.76rem');
+ h+=tk('Ctrl','id-k-ctrl','','font-size:.72rem')+tk('⊞','','','font-size:.72rem')+tk('Alt','id-k-alt','','font-size:.72rem')
+   +tk('Espai','','','grid-column:span 8;font-size:.72rem')
+   +tk('Alt Gr','id-k-altgr','','font-size:.72rem')+tk('Fn','','','font-size:.72rem')+tk('Ctrl','','','font-size:.72rem');
+ return '<div class="tec">'+h+'</div>';
+}
+function arbre(okId){
+ var it=[['🏠','Inici','tr-ini'],['🖥️','Escriptori','tr-esc'],['⬇️','Baixades','tr-bax'],['📄','Documents','tr-doc'],['🖼️','Imatges','tr-ima'],['💻','Aquest PC','tr-pc']];
+ var h='';
+ for(var i=0;i<it.length;i++){
+  var a=(it[i][2]===okId)?'data-ok="1"':'data-wrong="En aquesta prova demanem una altra carpeta de l\'arbre de l\'esquerra."';
+  h+='<div '+(it[i][2]===okId?'data-ok="1"':'data-wrong="En aquesta prova demanem una altra carpeta de l\'arbre de l\'esquerra."')+' id="'+it[i][2]+'"><span>'+it[i][0]+'</span>'+it[i][1]+'</div>';
+ }
+ return '<div class="arbre">'+h+'</div>';
+}
+function ruta(seg,okSeg){
+ var h='';
+ for(var i=0;i<seg.length;i++){
+  var a=(seg[i]===okSeg)?'data-ok="1" id="rt-ok"':'data-wrong="Aquesta part de la ruta és un altre lloc. Mira bé, dins de la ruta blanca de damunt, el nom que demana la instrucció."';
+  h+='<span'+a+'><b>'+seg[i]+'</b></span>'+(i<seg.length-1?'<span class="sep-r">›</span>':'');
+ }
+ return '<div class="ruta">'+h+'</div>';
+}
+function ptu(emo,nom,atr){
+ return '<span class="ptu" '+(atr||'')+'><span class="e">'+emo+'</span>'+nom+'</span>';
+}
+function explic(op){
+ op=op||{};
+ return '<div class="exp"><div class="exp-cap">'
+  +'<div class="fla" data-wrong="Les fletxes serveixen per anar endarrere i endavant; però en aquesta prova no toca.">←</div>'
+  +'<div class="fla" data-wrong="Les fletxes serveixen per anar endarrere i endavant; però en aquesta prova no toca.">→</div>'
+  +ruta(op.segs||['Aquest PC','Documents','Classe 1'],op.okRuta)+'</div>'
+  +'<div class="exp-corp">'
+  +arbre(op.okArbre)
+  +'<div class="panell" '+(op.okPanell?'data-ok="1" id="pan-llis"':'data-wrong="Ara mateix no toca el panell: llegeix de nou la instrucció."')+'>'
+  +(op.contingut||'')
+  +(op.menu?'<div class="mctx" style="bottom:24px;right:24px;top:auto;left:auto">'+op.menu+'</div>':'')
+  +'</div></div></div>';
+}
+function paint(op){
+ var h='<div class="pnt">'
+  +'<div class="pnt-tit">'
+  +'<div class="pnt-flet" '+(op.okUndo?'data-ok="1" id="un-do"':'data-wrong="Aquesta és la fletxa que DESFÉS l\'últim traç; però no és això el que busquem en aquesta prova."')+'>↩️</div>'
+  +'<div class="pnt-flet" data-wrong="Aquesta fletxa REFÉS el que has desfet; no és la que busquem.">↪️</div>'
+  +'<span class="pnd">🎨 Paint ----- Sense títol</span></div>'
+  +'<div class="pnt-tabs">'
+  +'<div '+(op.fileOn?'data-wrong="El menú Arxiu ja està obert damunt seu; tria l\'opció que demana la instrucció."':'data-wrong="El menú Arxiu serveix per guardar; però ara busquem una eina de la barra de sota."')+' id="tab-arxiu">Arxiu</div>'
+  +'<div data-wrong="Aquesta pestanya té més eines; però no és el que busquem.">Inici</div>'
+  +'<div data-wrong="Aquesta pestanya té més eines; però no és el que busquem.">Vista</div></div>'
+  +'<div class="pnt-riba">'
+  +'<div><div class="rib-filter">'
+  +'<div class="hin" data-wrong="Aquesta és l\'eina Llapis; no és la que busquem.">✏️<small>Llapis</small></div>'
+  +'<div class="hin" data-wrong="Aquesta és l\'eina Pinzell; no és la que busquem.">🖌️<small>Pinzell</small></div>'
+  +hin('🧽','Goma d\'esborrar','h-goma',op.okGoma)
+  +hin('🪣','Pot de pintura','h-pot',op.okPot)
+  +'</div><div class="rib-h">Eines</div></div>'
+  +'<div><div class="rib-filter">'
+  +'<div class="hin" data-wrong="Aquesta forma no és l\'eina que busquem.">▭<small>Rectangle</small></div>'
+  +'<div class="hin" data-wrong="Aquesta forma no és l\'eina que busquem.">⭕<small>El·lipse</small></div>'
+  +'<div class="hin" data-wrong="Aquesta forma no és l\'eina que busquem.">📏<small>Línia</small></div>'
+  +'</div><div class="rib-h">Formes</div></div>'
+  +'<div><div class="paleta">'
+  +'<span class="pal" data-wrong="Els colors s\'agafen amb una eina; però el color no és el que busquem en aquesta prova." style="background:#d0432f"></span>'
+  +'<span class="pal" data-wrong="Els colors s\'agafen amb una eina; però el color no és el que busquem en aquesta prova." style="background:#2b86e0"></span>'
+  +'<span class="pal" data-wrong="Els colors s\'agafen amb una eina; però el color no és el que busquem en aquesta prova." style="background:#57b657"></span>'
+  +'<span class="pal" data-wrong="Els colors s\'agafen amb una eina; però el color no és el que busquem en aquesta prova." style="background:#ffd23e"></span>'
+  +'<span class="pal" data-wrong="Els colors s\'agafen amb una eina; però el color no és el que busquem en aquesta prova." style="background:#8b5cf6"></span>'
+  +'</div><div class="rib-h">Colors</div></div>'
+  +'</div>'
+  +'<div class="fulles"><div class="ful-canvas"><div class="sol"></div><div class="linia"></div><div class="munt"></div></div></div>'
+  +(op.fileOn?'<div class="menu-arxiu">'
+    +'<div data-wrong="Nou començaria un dibuix buit; però no és això el que busquem.">📄&nbsp;&nbsp;Nou</div>'
+    +'<div data-wrong="Obre serveix per obrir un dibuix que ja tens guardat; però no és això el que busquem.">📂&nbsp;&nbsp;Obre</div>'
+    +'<div data-wrong="«Desa» serveix quan el dibuix ja té nom i lloc; avui volem triar el nom i la carpeta: «Anomena i desa».">💾&nbsp;&nbsp;Desa</div>'
+    +'<div '+(op.okDesa?'data-ok="1" id="m-anomena"':'data-wrong="Aquesta opció no és la que busquem."')+'>💾&nbsp;&nbsp;Anomena i desa<small>Triar la carpeta i el nom</small></div>'
+    +'<div data-wrong="Imprimeix serveix per treure el dibuix en paper; no és això el que busquem.">🖨️&nbsp;&nbsp;Imprimeix</div>'
+    +'</div>':'')
+  +'</div>';
+ return '<div class="pant gris">'+h+''+tasca()+'</div>';
+}
+function hin(emo,nom,id,ok){
+ var a=ok?'data-ok="1"':'data-wrong="Aquesta eina no és la que busquem; llegeix de nou la instrucció."';
+ return '<div class="hin" '+(id?'id="'+id+'" ':'')+a+'>'+emo+'<small>'+nom+'</small></div>';
+}
+function word(){
+ return '<div class="pant gris"><div class="pnt">'
+  +'<div class="pnt-tit"><span class="pnd"><span class="wic" style="width:30px;height:30px;border-radius:6px;font-size:.95rem">W</span> Carta - Document1*</span></div>'
+  +'<div class="pnt-tabs">'
+  +'<div data-wrong="El menú Arxiu ja està obert damunt seu; tria l\'opció que demana la instrucció." id="tab-arxiu">Arxiu</div>'
+  +'<div data-wrong="Aquesta pestanya té eines d\'escriure; però no és el que busquem.">Inici</div>'
+  +'<div data-wrong="Aquesta pestanya té eines d\'escriure; però no és el que busquem.">Insereix</div>'
+  +'<div data-wrong="Aquesta pestanya té eines d\'escriure; però no és el que busquem.">Disposició</div></div>'
+  +'<div class="mdoc"><div class="ful-s">'
+  +'<p style="font-size:1.25rem;font-weight:700">Estimada Clara,</p>'
+  +'<p>Et conto que ja sé fer servir l\'ordinador: obro programes '
+  +'des del menú Inici, moc les finestres i guardo els documents '
+  +'a la carpeta Documents. Guardo sovint, com m\'has ensenyat.</p>'
+  +'<p>Fins aviat,</p>'
+  +'</div></div>'
+  +'<div class="menu-arxiu">'
+  +'<div data-wrong="Nou començaria un document buit; però no és això el que busquem.">📄&nbsp;&nbsp;Nou</div>'
+  +'<div data-wrong="Obre serveix per obrir un document que ja tens guardat; però no és això el que busquem.">📂&nbsp;&nbsp;Obre</div>'
+  +'<div data-wrong="«Desa» serveix quan el document ja té nom i lloc; si és la PRIMERA vegada que el guardes, cal «Anomena i desa».">💾&nbsp;&nbsp;Desa</div>'
+  +'<div data-ok="1" id="m-anomena">💾&nbsp;&nbsp;Anomena i desa<small>Triar la carpeta i el nom</small></div>'
+  +'<div data-wrong="Imprimeix serveix per treure el document en paper; no és això el que busquem.">🖨️&nbsp;&nbsp;Imprimeix</div>'
+  +'</div>'
+  +'</div>'+tasca()+'</div>';
+}
+function fitxers(){
+ var f=[
+  ['🖼️','flor.jpg','Aquesta és una IMATGE (una foto); un document de Word acaba en .docx i té la icona blava amb la W.'],
+  ['📄','paperetes.txt','És un fitxer de text del Bloc de notes (.txt); no és un document de Word.'],
+  ['🖼️','paisatge.png','Aquesta és una IMATGE (una foto); un document de Word acaba en .docx.'],
+  ['🎵','musica.mp3','Això és MÚSICA; no és un document de Word.'],
+  ['W','Carta_avi.docx',null]
+ ];
+ var h='';
+ for(var i=0;i<f.length;i++){
+  var ic=(f[i][0]==='W')?'<span class="arxiu-w">W</span>':'<span class="e">'+f[i][0]+'</span>';
+  var ok=f[i][2]===null?1:0;
+  h+='<span class="ptu" '+(ok?'data-ok="1" id="fx-w"':'data-wrong="'+f[i][2]+'"')+'>'+ic+f[i][1]+'</span>';
+ }
+ return '<div class="pant gris"><div class="exp">'
+  +'<div class="tit-fin2">📁 Documents</div>'
+  +'<div class="exp-cap">'+ruta(['Aquest PC','Documents'],null)+'</div>'
+  +'<div class="exp-corp">'+arbre('tr-doc')+'<div class="panell">'+h+'</div></div></div>'+tasca()+'</div>';
+}
+function papereraWin(op){
+ op=op||{};
+ var vac;
+ if(op.vacOk){vac='data-ok="1" id="vac-ic"'}
+ else if(op.vacDbl){vac='data-ok2="1" data-dbl="1" id="vac-ic"'}
+ else{vac='data-wrong="Aquesta sí que és la carpeta Vacances... però mira bé COM et demana fer el clic la instrucció."'}
+ return '<div class="pant gris"><div class="exp">'
+  +'<div class="tit-fin2">🗑️ Paperera de reciclatge</div>'
+  +'<div class="exp-cap">'+ruta(['Aquest PC','Paperera'],null)+'</div>'
+  +'<div class="exp-corp">'
+  +'<div class="panell" data-wrong="Aquest és un lloc BUIT de la Paperera. La carpeta que busquem és la Vacances.">'
+  +ptu('📂','Vacances',vac)
+  +ptu('📄','vells_papers.txt','data-wrong="Aquest fitxer no és; el que busquem és la carpeta Vacances."')
+  +'</div></div></div>'+tasca()+'</div>';
+}
+function papereraMenu(){
+ return '<div class="pant gris"><div class="exp">'
+  +'<div class="tit-fin2">🗑️ Paperera de reciclatge</div>'
+  +'<div class="exp-cap">'+ruta(['Aquest PC','Paperera'],null)+'</div>'
+  +'<div class="exp-corp">'
+  +'<div class="panell" data-wrong="El que hem de tocar és una de les opcions del MENÚ que tens obert.">'
+  +ptu('📂','Vacances','data-wrong="Ja has fet el clic dret sobre la carpeta! Ara tria una opció del menú obert."')
+  +'<div class="mctx" style="top:36px;left:130px">'
+  +'<div data-wrong="Elimina ho borraria del tot! Busquem tornar-la al seu lloc.">🗑️&nbsp;&nbsp;Elimina</div>'
+  +'<div data-ok="1" id="ac-rest">♻️&nbsp;&nbsp;Restaura<small style="font-weight:400;display:block;color:#5a6b87">Torna-ho al seu lloc</small></div>'
+  +'<div data-wrong="Buidar la paperera esborraria TOT el que hi ha dins; compte!">🧹&nbsp;&nbsp;Buida la paperera</div>'
+  +'<div data-wrong="Propietats només mostra informació; busquen «Restaura».">ℹ️&nbsp;&nbsp;Propietats</div>'
+  +'</div></div></div></div>'+tasca()+'</div>';
+}
+
+/* ---------- llista de proves ---------- */
+var Q=[
+/* ===== T1: Engegar i entrar (7 proves) =====*/
+{b:'T1',k:'click',tot:'El botó d\'encesa',
+ txt:'Bona tarda! Tot comença aquí: has d\'ENCENDRE l\'ordinador. Fes clic al botó d\'encesa de la torre (el símbol ⏻, un cercle amb una ratlla vertical a dalt).',
+ aj:'Busca el botó RODÓ que té el símbol ⏻ per sobre. L\'altre botó rodó no és l\'encesa: és per obrir el disc.',
+ st:scrTorre,ph:'#btn-on'},
+{b:'T1',k:'click',tot:'Pantalla de bloqueig',
+ txt:'L\'ordinador s\'està carregant, ja tens la pantalla amb l\'hora. Fes UN clic (botó esquerre) a qualsevol lloc de la imatge per continuar.',
+ aj:'Un clic del botó ESQUERRE del ratolí, per exemple al mig de la pantalla. També pots tocar una tecla del teclat.',
+ st:scrBloq,ph:'.fons'},
+{b:'T1',k:'click',tot:'Tria el teu usuari',
+ txt:'Aquesta és la pantalla per entrar. Has de fer clic sobre el nom de la usuària MARIA.',
+ aj:'La Maria és l\'avatar rodona amb la lletra M (color groc), la de la DRETA.',
+ st:scrUsuaris,ph:'#usu-maria'},
+{b:'T1',k:'type',tot:'Escriu la contrasenya',
+ txt:'Escriu la contrasenya de la Maria: Casa34 (la C és MAJÚSCULA i hi ha números) i prem Intro.',
+ aj:'Per fer la C gran: mantén premuda la tecla Shift ⇧ mentre prems la C. Després escriu asa34 amb fe, sense Shift.',
+ usu:'Maria',
+ mostra:'Casa34',resp:'Casa34',sens:true,
+ chips:['⚠️ Distingeix MAJÚSCULES i minúscules','Compte amb la C gran i els números','Al final, prem Intro ↵']},
+{b:'T1',k:'click',tot:'Ctrl + Alt + Supr',
+ txt:'Vas a prendre un cafè? Bloqueja la pantalla! Amb les tecles Ctrl + Alt + Supr surt aquest menú. Fes clic a l\'opció BLOQUEJAR.',
+ aj:'És la PRIMERA opció, la del cadenat 🔒.',
+ st:scrCAD,ph:'#li-bloq'},
+{b:'T1',k:'click',tot:'El botó d\'engegat del menú Inici',
+ txt:'Has acabat la sessió. Si el menú Inici encara no està obert, prem la tecla ⊞ del teclat: aquí el tens obert. Fes clic al botó d\'engegat (⏻), a la DRETA de baix del menú.',
+ aj:'És la icona del cercle amb la ratlla vertical ⏻, just a la DRETA del nom Maria, a baix del menú Inici.',
+ st:function(){return '<div class="pant"><div class="fons cwriter"></div>'+iniApa({okPower:true})+tasca()+'</div>'},
+ ph:'#pw-ic'},
+{b:'T1',k:'click',tot:'Apagar / Reiniciar / Suspèn',
+ txt:'Ha sortit un menú petit amb tres opcions d\'engegar. Com s\'ha acabat la classe, fes clic a APAGAR.',
+ aj:'«Apagar» tanca l\'ordinador del tot. «Reinicia» el torna a engegar. «Suspèn» només apaga la pantalla.',
+ st:function(){return '<div class="pant"><div class="fons cwriter"></div>'+iniApa({okApa:true})+tasca()+'</div>'},
+ ph:'#op-apa'},
+
+/* ===== T2: El ratolí (7 proves) =====*/
+{b:'T2',k:'click',tot:'Botó esquerre',
+ txt:'Aquesta és la MÀ del ratolí. Fes clic al BOTÓ ESQUERRE del ratolí de la imatge. És el d\' «accionar».',
+ aj:'És el botonet GRAN de DALT A L\'ESQUERRA del ratolí (a la part dels «dits»).',
+ st:function(){return '<div class="ratolla"><div class="rat-body"><div class="rat-b rat-esq" data-ok="1" id="rat-e"></div><div class="rat-b rat-dta" data-wrong="Aquest és el botó DRET; busquem el de l\'ESQUERRA."></div><div class="rat-div"></div><div class="rat-div2"></div><div class="rat-rot"></div></div></div>'},
+ ph:'#rat-e'},
+{b:'T2',k:'click',tot:'Botó dret',
+ txt:'Molt bé! Ara fes clic al BOTÓ DRET del ratolí de la imatge. Amb ell «preguntem» quines opcions hi ha.',
+ aj:'És el botonet de DALT A LA DRETA del ratolí.',
+ st:function(){return '<div class="ratolla"><div class="rat-body"><div class="rat-b rat-esq" data-wrong="Aquest és el botó ESQUERRE; busquem el de la DRETA."></div><div class="rat-b rat-dta" data-ok="1" id="rat-d"></div><div class="rat-div"></div><div class="rat-div2"></div><div class="rat-rot"></div></div></div>'},
+ ph:'#rat-d'},
+{b:'T2',k:'dblclick',tot:'Doble clic',
+ txt:'Per OBRIR una icona cal fer DOBLE CLIC: dos clics seguits i ràpids. Fes DOBLE CLIC sobre la icona de la PAPERERA de l\'escriptori.',
+ aj:'Si no s\'obre, prova els dos clics una mica més de pressa, sense moure el ratolí entre els dos clics.',
+ st:function(){return dsk([icoApl('🗑️','Paperera','data-ok="1" id="ic-pap"'),
+  icoApl('📂','Documents','data-wrong="Aquesta és la carpeta Documents; busquem la icona de la PAPERERA."'),
+  icoApl('📝','Bloc de notes','data-wrong="Aquest és el Bloc de notes; busquem la PAPERERA."'),
+  icoApl('🎨','Paint','data-wrong="Aquest és el Paint; busquem la PAPERERA."')])},
+ ph:'#ic-pap'},
+{b:'T2',k:'click',tot:'Un clic selecciona',
+ txt:'Atenció: UN clic només SELECCIONA (senyala) una icona, sense obrir-la. Fes UN SOL clic sobre la icona del BLOC DE NOTES (sense doble clic!).',
+ aj:'Amb un clic la icona queda senyalada. Amb DOS clics ràpids s\'obre. Acaba d\'aquesta manera: 1 clic = seleccionar.',
+ st:function(){return dsk([icoApl('🗑️','Paperera','data-wrong="Aquesta és la Paperera; però ara busquem el Bloc de notes."'),
+  icoApl('📂','Documents','data-wrong="Aquesta és la carpeta Documents; però ara busquem el Bloc de notes."'),
+  icoApl('📝','Bloc de notes','data-ok="1" id="ic-bn"'),
+  icoApl('🎨','Paint','data-wrong="Aquest és el Paint; però ara busquem el Bloc de notes."')])},
+ ph:'#ic-bn'},
+{b:'T2',k:'rclick',okR:'data-ok',tot:'Clic dret',
+ txt:'El botó dret «pregunta» què pots fer. Fes CLIC DRET en un espai BUIT de l\'escriptori (un lloc on NO hi hagi icones).',
+ aj:'Allà on no hi hagi cap icona, per exemple al MIG de la pantalla. Recorda: botó DRET del ratolí.',
+ st:function(){return dsk([icoApl('🗑️','Paperera','data-wrong="Sobre una icona també pots fer clic dret; però ara demanen l\'ESPAI BUIT."'),
+  icoApl('📂','Documents','data-wrong="Sobre una icona també pots fer clic dret; però ara demanen l\'ESPAI BUIT."'),
+  icoApl('📝','Bloc de notes','data-wrong="Sobre una icona també pots fer clic dret; però ara demanen l\'ESPAI BUIT."')],true)},
+ ph:'.fons'},
+{b:'T2',k:'click',tot:'Menú contextual',
+ txt:'S\'ha obert el MENÚ D\'OPCIONS (menú contextual). Per triar una opció, fes clic amb el botó ESQUERRE sobre «Mostra més opcions», l\'ÚLTIMA de la llista.',
+ aj:'Sempre tries les opcions del menú amb el botó ESQUERRE, encara que el menú l\'hagi obert el botó dret.',
+ st:function(){return '<div class="pant"><div class="fons cwriter">'
+  +'<div class="mctx" style="top:110px;left:170px">'
+  +'<div data-wrong="Aquesta opció canviaria la manera de veure les icones; busquen una altra.">Visualització <span class="fletxa">▸</span></div>'
+  +'<div data-wrong="Aquesta opció ordenaria les icones; busquen una altra.">Ordena per <span class="fletxa">▸</span></div>'
+  +'<div data-wrong="Aquesta opció refresca la pantalla; busquen una altra.">Actualitza</div>'
+  +'<div data-wrong="Aquesta opció canviaria el fons de pantalla; busquen una altra.">Personalitza <span class="fletxa">▸</span></div>'
+  +'<div data-ok="1" id="mi-mes">Mostra més opcions</div>'
+  +'</div></div>'+tasca()+'</div>'},
+ ph:'#mi-mes'},
+{b:'T2',k:'drag',tot:'Clicar i arrossegar',
+ txt:'Aquestes fotos antigues ja no serveixen. ARROSSEGA el fitxer «foto_vella.jpg» fins a la PAPERERA: mantén premut el botó esquerre sobre el fitxer, mou el ratolí cap a la Paperera i deixa anar el botó allà.',
+ aj:'Agafa el fitxer FORTAMENT (botó premut tot el camí!). Si ho has deixat anar massa aviat, torna-ho a provar.',
+ st:function(){return dsk(['<div class="icn arro" data-drag="1" id="ar-foto" style="background:rgba(255,255,255,.14)"><span class="e">🖼️</span><span>foto_vella.jpg</span></div>',
+  icoApl('🗑️','Paperera','data-drop="1" id="drop-bin" style="border:4px dashed rgba(255,255,255,.6)"')])},
+ ph:'#ar-foto'},
+
+/* ===== T3: El teclat (12 proves) =====*/
+{b:'T3',k:'click',tot:'Shift (les majúscules)',
+ txt:'Mirem el TECLAT (el de la imatge). La tecla SHIFT fa lletres MAJÚSCULES mentre la mantens premuda. Fes clic sobre la tecla Shift.',
+ aj:'És una tecla GRAN amb la fletxa ⇧ cap amunt, a banda i banda del teclat (les dues serveixen).',
+ st:teclat2,ph:'#id-k-shift1'},
+{b:'T3',k:'click',tot:'Bloq Mayús',
+ txt:'Bloq Mayús és un INTERRUPTOR: la prems una vegada i TOT surt en majúscules fins que la tornis a prémer. Fes clic sobre aquesta tecla.',
+ aj:'Està a l\'esquerra, just DAMUNT de la tecla Shift. Quan està activada s\'encén un llumet al teclat.',
+ st:teclat2,ph:'#id-k-bloq'},
+{b:'T3',k:'click',tot:'Retroceso ←',
+ txt:'Has escrit malament una lletra. Fes clic a la tecla que esborra CAP ENRERE (la lletra que hi ha a l\'ESQUERRA del cursor).',
+ aj:'És la fletxa que marxa endarrere: «← Retroceso», a damunt a la dreta de les lletres.',
+ st:teclat2,ph:'#id-k-back'},
+{b:'T3',k:'click',tot:'Supr',
+ txt:'Fes clic a la tecla SUPR, que esborra cap ENVANT (el que hi ha a la DRETA del cursor).',
+ aj:'Està a damunt a la dreta, al costat de Retroceso. Diu «Supr».',
+ st:teclat2,ph:'#id-k-supr'},
+{b:'T3',k:'click',tot:'Alt Gr',
+ txt:'Per escriure l\'arrova (@) cal la tecla ALT GR. Fes clic sobre Alt Gr.',
+ aj:'Està just a la DRETA de la barra espaiadora (la tecla llarga del mig del teclat).',
+ st:teclat2,ph:'#id-k-altgr'},
+{b:'T3',k:'click',tot:'Intro ↵',
+ txt:'Fes clic sobre la tecla INTRO (també l\'anomenen Enter o Retorn).',
+ aj:'És la tecla de la DRETA del teclat, amb la fletxa ↵. Baixa de línia, comença paràgrafs i confirma accions.',
+ st:teclat2,ph:'#id-k-intro'},
+{b:'T3',k:'click',tot:'La tecla de l\'accent',
+ txt:'Fes clic sobre la tecla de l\'ACCENT, la que està al costat de la Ç.',
+ aj:'És una tecla petita amb el signe ´ (i també el ` si prems Shift sobre ella).',
+ st:teclat2,ph:'#id-k-accent'},
+{b:'T3',k:'type',tot:'Accent: cafè',
+ txt:'Escriu aquesta paraula: cafè   (recorda: PRIMER la tecla de l\'accent, DESPRÉS la vocal).',
+ aj:'Primer prem la tecla de l\'accent (´). Sembla que no passa res: és normal! Tot seguit prem la e: sortirà é.',
+ mostra:'cafè',resp:'cafè',sens:false,
+ chips:['1r: prem ´','després prem la e','resultat: é']},
+{b:'T3',k:'type',tot:'Accent: Pàgina',
+ txt:'Escriu aquesta paraula: Pàgina   (l\'accent obert del principi de l\'a).',
+ aj:'Primer la P MAJÚSCULA amb Shift ⇧. Després: prem ´ (encara no surt res) i després la a: sortirà à.',
+ mostra:'Pàgina',resp:'Pàgina',sens:false,
+ chips:['P gran amb Shift','1r ´, després a','resultat: à']},
+{b:'T3',k:'type',tot:'L\'arrova @',
+ txt:'Escriu aquest correu electrònic: anna@gmail.com   (l\'arrova es fa amb Alt Gr + 2).',
+ aj:'Per fer el símbol @: mantén premuda la tecla ALT GR (dreta de la barra espaiadora) i prem la tecla del NÚMERO 2.',
+ mostra:'anna@gmail.com',resp:'anna@gmail.com',sens:false,
+ chips:['manté premut Alt Gr','prem la tecla 2','resultat: @']},
+{b:'T3',k:'type',tot:'El signe !',
+ txt:'Escriu el següent: 2025!     (el signe ! surt al NÚMERO 1: amb Shift + 1).',
+ aj:'Per fer el signe !: mantén premuda SHIFT i prem la tecla del número 1.',
+ mostra:'2025!',resp:'2025!',sens:false,
+ chips:['manté premut Shift','prem la tecla 1','resultat: !']},
+{b:'T3',k:'type',tot:'Tot en majúscules',
+ txt:'Escriu el nom del teu poble com als rètols dels carrers: LLEIDA, tot en MAJÚSCULES.',
+ aj:'Si prems BLOQ MAYÚS una vegada, tot sortirà en majúscules (i un llumet s\'encendrà al teclat). Recorda de tornar-la a prémer quan acabis!',
+ mostra:'LLEIDA',resp:'LLEIDA',sens:true,
+ chips:['⚠️ Cal tot MAJÚSCULES','Bloq Mayús una vegada','o Shift + cada lletra']},
+
+/* ===== T4: Les finestres (4 proves) =====*/
+{b:'T4',k:'click',tot:'Minimitzar —',
+ txt:'Aquesta finestra té altres programes DARRERE. Fes clic al botó que l\'AMAGA a la barra de baix sense tancar-la.',
+ aj:'És el botó — , el PRIMER dels tres de la cantonada de la DRETA de la barra de títol. Es diu «Minimitzar».',
+ st:function(){return '<div class="pant"><div class="fons cwriter"></div>'+ctrlWin({okMin:true,nom:'Dibuix - Paint',cos:'Aquí hi ha el teu dibuix'})+'</div>'},
+ ph:'#w-min'},
+{b:'T4',k:'click',tot:'Maximitzar ▢',
+ txt:'La finestra és massa petita per treballar-lo còmodament. Fes clic al botó que l\'AMPLIA fins a tota la pantalla.',
+ aj:'És el botó del QUADRAT ▢, el del MIG dels tres. Es diu «Maximitzar».',
+ st:function(){return '<div class="pant"><div class="fons cwriter"></div>'+ctrlWin({okMax:true,nom:'Dibuix - Paint',cos:'Aquí hi ha el teu dibuix'})+'</div>'},
+ ph:'#w-max'},
+{b:'T4',k:'click',tot:'Tancar ✕',
+ txt:'Has acabat d\'escriure i JA has guardat el document. Fes clic al botó que TANCA la finestra del tot.',
+ aj:'És la X vermella ✕, l\'ÚLTIMA dels tres botons. Abans de tancar: guarda sempre la feina!',
+ st:function(){return '<div class="pant"><div class="fons cwriter"></div>'+ctrlWin({okX:true,nom:'Carta - Word',cos:'El teu document està guardat ✓'})+'</div>'},
+ ph:'#w-x'},
+{b:'T4',k:'click',tot:'Barra de títol',
+ txt:'Vols canviar la finestra de lloc. Fes clic sobre la BARRA DE TÍTOL: la franja BLAVA de DAMUNT, al mig (on diu el nom del programa, sense tocar els tres botons).',
+ aj:'Allà, mantenint premut el botó esquerre i arrossegant, la finestra t\'acompanya on vulguis. Aquesta franja es diu «barra de títol».',
+ st:function(){return '<div class="pant"><div class="fons cwriter"></div>'+ctrlWin({okTit:true,nom:'Dibuix - Paint',cos:'Agafa la finestra per la barra de títol de damunt!'})+'</div>'},
+ ph:'#tit-barra'},
+
+/* ===== T5: Buscar programes (3 proves) =====*/
+{b:'T5',k:'click',tot:'Quadre de cerca',
+ txt:'Per buscar un programa NO cal saber on és: escriure el seu nom al quadre de cerca ho troba tot. Fes clic al QUADRE DE CERCA de la barra de baix.',
+ aj:'És el requadre LLARG de la barra inferior, amb la lupa 🔍 i la paraula «Cerca».',
+ st:function(){return '<div class="pant"><div class="fons cwriter"></div>'+tasca({okCerca:true})+'</div>'},
+ ph:'.tb-cerca'},
+{b:'T5',k:'click',tot:'Totes les aplicacions',
+ txt:'El menú Inici és l\'aparador dels teus programes (el tenim obert). Fes clic a «TOTES LES APLICACIONS», a la dreta de la paraula «Fixades», per veure la llista completa ordenada alfabèticament.',
+ aj:'Està a la part de DAMUNT del menú Inici, al costat del text «Fixades».',
+ st:function(){return '<div class="pant"><div class="fons cwriter"></div>'+iniNormal(true)+tasca()+'</div>'},
+ ph:'#totes-apl'},
+{b:'T5',k:'click',tot:'Cercar el Paint',
+ txt:'Hem escrit «pa» al quadre de cerca i ja han sortit els programes que coincideixen. Fes clic al programa PAINT de la llista per obrir-lo.',
+ aj:'És el del pinzell 🎨. Compte: «Paint 3D» és un programa diferent!',
+ st:function(){return '<div class="pant"><div class="fons cwriter"></div>'
+  +'<div class="inic"><div class="cap-cerca">🔍 pa</div>'
+  +'<div class="mctx" style="position:static;box-shadow:none;border:2px solid #dde6f3">'
+  +'<div data-wrong="Aquest és el Panell de control; busquem el PAINT.">⚙️ Panell de control</div>'
+  +'<div data-ok="1" id="res-paint">🎨 Paint</div>'
+  +'<div data-wrong="Aquest és «Paint 3D», un programa més NOU i diferent; busquem el Paint normal.">🎨 Paint 3D</div>'
+  +'<div data-wrong="Aquest és el Bloc de notes; busquem el Paint.">📝 Bloc de notes</div>'
+  +'</div></div>'+tasca()+'</div>'},
+ ph:'#res-paint'},
+
+/* ===== T6: Explorador d'Arxius (9 proves) =====*/
+{b:'T6',k:'click',tot:'Carpeta groga',
+ txt:'Per veure les teves carpetes, obre l\'EXPLORADOR D\'ARXIUS. Fes clic a la seva icona: la CARPETA GROGA 📁 de la barra de baix.',
+ aj:'Està a la barra inferior, al costat del navegador. La icona és una carpeta groga 📁.',
+ st:function(){return '<div class="pant"><div class="fons cwriter"></div>'+tasca({okCarp:true})+'</div>'},
+ ph:'.tb-ic[title="Explorador d\'Arxius"]'},
+{b:'T6',k:'click',tot:'L\'arbre de carpetes',
+ txt:'L\'Explorador és obert. A l\'ESQUERRA hi ha l\'arbre de carpetes. Fes clic a la carpeta DOCUMENTS de l\'arbre.',
+ aj:'És a la columna de l\'esquerra, amb la icona de paper 📄 i el nom «Documents».',
+ st:function(){return explic({okArbre:'tr-doc',contingut:'<div style="color:#8195b5;font-weight:600">← Fes clic a Documents a l\'arbre de l\'esquerra</div>'})},
+ ph:'#tr-doc'},
+{b:'T6',k:'dblclick',tot:'Obrir una carpeta',
+ txt:'Aquest és el contingut de Documents. Obre la carpeta «CLASSE 1» amb DOBLE CLIC.',
+ aj:'Recorda: per OBRIR una carpeta, doble clic (dos clics ràpids i seguits).',
+ st:function(){return explic({
+  contingut:ptu('📂','Classe 1','data-ok="1" id="cl-1"')
+   +ptu('📂','Vacances','data-wrong="Aquesta és la carpeta Vacances; busquem la Classe 1."')
+   +ptu('🖼️','paisatge.png','data-wrong="Aquesta és una imatge; busquem la carpeta Classe 1."')})},
+ ph:'#cl-1'},
+{b:'T6',k:'click',tot:'La ruta',
+ txt:'Molt bé, has entrat a Classe 1! Si et perds, la RUTA de DAMUNT et diu on ets: «Aquest PC › Documents › Classe 1». Fes clic al nom DOCUMENTS DE LA RUTA de damunt, per tornar a Documents.',
+ aj:'La ruta és la franja BLANCA de damunt, a la dreta de les fletxes. Cada «›» és un nivell més cap endins.',
+ st:function(){return explic({okRuta:'Documents',
+  contingut:ptu('🖼️','Dibuix1.png','data-wrong="Aquesta és una imatge del panell; busquem el nom Documents dins de la RUTA blanca de damunt."')
+   +ptu('🖼️','Dibuix2.png','data-wrong="Aquesta és una imatge del panell; busquem el nom Documents dins de la RUTA blanca de damunt."')})},
+ ph:'#rt-ok'},
+{b:'T6',k:'rclick',okR:'data-ok',tot:'Crear una carpeta',
+ txt:'Crearem una carpeta nova. Fes CLIC DRET en un espai BUIT del panell de la DRETA (que no caigui sobre cap fitxer!).',
+ aj:'Amb el botó dret en un lloc on no hi hagi icones: per exemple a la part de baix del panell dret.',
+ st:function(){return explic({okPanell:true,
+  contingut:ptu('🖼️','Dibuix1.png','data-wrong="Sobre aquest fitxer NO: busquem un LLOC BUIT del panell."')})},
+ ph:'#pan-llis'},
+{b:'T6',k:'click',tot:'Nou › Carpeta',
+ txt:'S\'ha obert el menú del clic dret. A l\'opció «Nou ▸» el submenú ja està obert. Fes clic a «CARPETA» dins del submenú.',
+ aj:'El submenú surt a la DRETA de «Nou ▸»: allà hi ha «Carpeta», «Document de text» i altres.',
+ st:function(){return explic({
+  contingut:ptu('🖼️','Dibuix1.png','data-wrong="Aquest és un fitxer del panell; busquem el submenú «Nou ▸ Carpeta» del menú."'),
+  menu:'<div data-wrong="Aquesta opció canviaria la vista; busquen «Carpeta».">Visualització <span class="fletxa">▸</span></div>'
+   +'<div data-wrong="Aquesta opció ordenaria els elements; busquen «Carpeta».">Ordena per <span class="fletxa">▸</span></div>'
+   +'<div style="position:relative">⚠️ Nou <span class="fletxa">▸</span>'
+   +'<span class="mctx subm" style="left:104%;top:-6px;min-width:170px">'
+   +'<div data-ok="1" id="nu-car">📁 Carpeta</div>'
+   +'<div data-wrong="Això crearia un fitxer de text, no una CARPETA.">📄 Document de text</div>'
+   +'<div data-wrong="Això crearia un accés directe, no una CARPETA.">🔗 Accés directe</div>'
+   +'</span></div>'
+   +'<div data-wrong="Aquesta opció obre el menú clàssic; però «Carpeta» ja és visible al costat.">Mostra més opcions</div>'})},
+ ph:'#nu-car'},
+{b:'T6',k:'type',tot:'El nom de la carpeta',
+ txt:'La carpeta nova espera el seu NOM. Escriu: Els meus dibuixos   i prem Intro.',
+ aj:'Si t\'equivoques, esborra amb la fletxa Retroceso ←. Quan estigui bé el text, prem Intro ↵.',
+ mostra:'Els meus dibuixos',resp:'Els meus dibuixos',sens:false,
+ chips:['escriu el nom','després prem Intro ↵']},
+{b:'T6',k:'rclick',okR:'data-ok2',tot:'La Paperera',
+ txt:'Oh no! Hem eliminat per error la carpeta «Vacances». Ja l\'hem trobat DINS DE LA PAPERERA. Fes CLIC DRET sobre la carpeta Vacances per veure les opcions.',
+ aj:'Recorda: el botó DRET «pregunta» què pots fer amb alguna cosa.',
+ st:function(){return papereraWin({vacOk:true})},
+ ph:'#vac-ic'},
+{b:'T6',k:'click',tot:'Restaura',
+ txt:'S\'ha obert el menú de la carpeta Vacances. Fes clic amb el botó ESQUERRE a «RESTAURA» per tornar la carpeta al seu lloc d\'origen.',
+ aj:'«Restaura» la torna al lloc d\'on va ser eliminada. «Elimina» la borraria del tot i «Buida» netejaria tota la Paperera.',
+ st:papereraMenu,ph:'#ac-rest'},
+
+/* ===== T7: El Paint (4 proves) =====*/
+{b:'T7',k:'click',tot:'La goma d\'esborrar',
+ txt:'Ets dins del PAINT i has pintat fora del dibuix! Fes clic a l\'eina GOMA D\'ESBORRAR.',
+  aj:'És a la zona «Eines», amb l\'esponja 🧽 i el seu nom sota la icona.',
+ st:function(){return paint({okGoma:true})},ph:'#h-goma'},
+{b:'T7',k:'click',tot:'El pot de pintura',
+ txt:'Vols omplir tot el fons de BLAU d\'una passada. Fes clic al POT DE PINTURA, l\'eina que omple de color.',
+ aj:'És a la zona «Eines», amb el cubell 🪣. Després esculls el color blau a la paleta, i cliques damunt el dibuix.',
+ st:function(){return paint({okPot:true})},ph:'#h-pot'},
+{b:'T7',k:'click',tot:'Desfés ↩️',
+ txt:'Aquell últim traç no t\'ha agradat gens. Fes clic a la FLETXA ENRERE que DESFÉS l\'últim traç.',
+ aj:'Està a la part superior, a l\'ESQUERRA (↩️). Cada clic desfà un pas més.',
+ st:function(){return paint({okUndo:true})},ph:'#un-do'},
+{b:'T7',k:'click',tot:'Anomena i desa',
+ txt:'El dibuix t\'encanta i vols guardar-lo a la teva carpeta. El menú ARXIU ja està obert damunt. Fes clic a «ANOMENA I DESA».',
+ aj:'«Desa» és per quan el dibuix ja té nom i lloc; «ANOMENA I DESA» és per TRIAR el nom i la carpeta. La primera vegada que guardes: sempre «Anomena i desa».',
+ st:function(){return paint({fileOn:true,okDesa:true})},ph:'#m-anomena'},
+
+/* ===== T8: El Word (2 proves) =====*/
+{b:'T8',k:'click',tot:'Guardar al Word',
+ txt:'Has escrit una carta i és la PRIMERA vegada que la guardes. Fes clic a «ANOMENA I DESA», dins del menú Arxiu (que ja està obert).',
+ aj:'Mira la barra de títol: «Document1*» indica que encara no està guardat. Primer «Anomena i desa»; dest després «Desa» les altres vegades.',
+ st:function(){return word()},ph:'#m-anomena'},
+{b:'T8',k:'click',tot:'Retrobar el .docx',
+ txt:'Tanca el Word i entra a l\'Explorador d\'Arxius. Estem a la carpeta DOCUMENTS. Fes clic al DOCUMENT DE WORD «Carta_avi.docx».',
+ aj:'Els documents de Word: en .docx, amb la icona BLAVA amb una W blanca.',
+ st:fitxers,ph:'#fx-w'}
+];
+
+/* ============ DESKTOP ============ */
+function dsk(icons,okFons){
+ return '<div class="pant"><div class="fons cwriter" '+(okFons?'data-ok="1"':'')+'>'
+  +'<div class="geleria">'+icons.join('')+'</div></div>'+tasca()+'</div>';
+}
+
+/* ============ MOTOR ============ */
+function trobaB(b){for(var i=0;i<BLOCS.length;i++){if(BLOCS[i].id===b)return BLOCS[i]}return null}
+function escapa(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function fb(t,tip){
+ var e=$('#fb'); if(!e)return;
+ e.className='fb '+tip; e.textContent=t; e.style.display='block';
+}
+function neutre(m){fb('💬 '+m,'info')}
+function fall(m){
+ if(loked)return;
+ errQ++; so('err');
+ fb('❌ '+m,'err');
+ var s=$('#esc');
+ if(s){s.classList.add('sx');setTimeout(function(){s.classList.remove('sx')},480)}
+ var b=$('#bAj'); if(b&&errQ>=2)b.classList.add('parp');
+}
+function avisa(t){BRVT.textContent=t;BRAVO.classList.add('on')}
+function pistell(){
+ var q=Llista[iQ]; if(!q||!q.ph)return;
+ var t=$('#esc'); if(!t)return;
+ var el=t.querySelector(q.ph); if(!el)return;
+ el.classList.add('pist');
+ setTimeout(function(){el.classList.remove('pist')},3400);
+}
+function avancar(){
+ loked=true;
+ var q=Llista[iQ];
+ so('ok');
+ var t=msgOk();
+ avisa(t);
+ resultats.push({b:q.b,primera:errQ===0});
+ try{parla(t+' Has resolt la prova.')}catch(e){}
+ setTimeout(function(){
+  BRAVO.classList.remove('on');loked=false;iQ++;
+  if(iQ<Llista.length)render();else final();
+ },1500);
+}
+function troca(lnk,el){
+ var n=el;
+ while(n&&n!==lnk){
+  if(n.dataset&&n.dataset.ok)return{ok:1,msg:n.dataset.wrong||''};
+  if(n.dataset&&n.dataset.ok2)return{ok:1,msg:n.dataset.wrong||''};
+  if(n.dataset&&n.dataset.wrong)return{wrong:1,msg:n.dataset.wrong};
+  if(n.dataset&&n.dataset.drop)return{drop:1};
+  n=n.parentElement;
+ }
+ return{};
+}
+function clicGen(lnk,e,dbl){
+ var r=troca(lnk,e.target);
+ if(r.ok)return true;
+ if(r.wrong){fall(r.msg);return false}
+ if(!dbl)neutre('Fes clic sobre l\'objecte que diu la instrucció (un botó, una icona, una tecla...).');
+ return false;
+}
+function mostraMenu(){
+ try{if(window.speechSynthesis)speechSynthesis.cancel()}catch(e){}
+ var n=Q.length;
+ APP.innerHTML=
+  '<h1>🎓 El joc de la informàtica bàsica</h1>'
+  +'<p class="sub">Pràctica del <b>Manual bàsic d\'informàtica</b> (Windows 11 i Office) · <b>'+n+' proves</b> pas a pas</p>'
+  +'<div class="tarja" style="text-align:center">'
+  +'<p style="font-size:1.1rem;margin:.2em 0 .6em">Escolleix un tema per practicar o fes el recorregut complet.<br>Pots repetir cada prova tantes vegades com vulguis: aquí no hi ha presa ni rellotge. 🙂</p>'
+  +'<button class="btn" id="btnTot">▶️ Jugar-ho tot ('+n+' proves)</button>'
+  +'<button class="btn groc" id="btnFont" style="margin-left:10px">🔤 Lletra més gran</button>'
+  +'</div>'
+  +'<div class="marge-men">'+BLOCS.map(function(b){
+    var nq=Q.filter(function(z){return z.b===b.id}).length;
+    return '<button class="bloc" data-b="'+b.id+'"><span class="emo">'+b.emo+'</span><span>'+b.nom
+      +'<small>'+b.des+'</small><span class="xifra">'+nq+' proves</span></span></button>';
+  }).join('')+'</div>'
+  +'<p class="peu">Per jugar: guarda aquest arxiu a l\'ordinador i fes DOBLE CLIC sobre ell per obrir-lo amb el navegador (Chrome o Edge). Funciona sense internet.<br>'
+  +'Cada prova ensenya una cosa del manual · Amb botó de veu 🔊 i pistes 💡 · Sense rellotge, sense presses ✓</p>';
+ $('#btnTot').onclick=function(){startGame(null)};
+ $('#btnFont').onclick=function(){
+  document.documentElement.classList.toggle('xx');
+  this.textContent=document.documentElement.classList.contains('xx')?'🔤 Lletra normal':'🔤 Lletra més gran';
+ };
+ var bl=document.querySelectorAll('.bloc');
+ for(var i=0;i<bl.length;i++){(function(b){b.onclick=function(){startGame(b)}}(bl[i]))}
+}
+function startGame(b){
+ Llista=b?Q.filter(function(z){return z.b===b}):Q.slice();
+ resultats=[];iQ=0;
+ render();
+}
+function render(){
+ errQ=0;
+ var q=Llista[iQ],bl=trobaB(q.b);
+ var lbl=(bl?bl.nom:'Prova')+' — '+(q.tot||'');
+ APP.innerHTML=sortida(lbl,Math.round(iQ/Llista.length*100))
+  +'<div class="tarja"><div class="instr"><span class="n">'+(iQ+1)+'</span><div style="flex:1">'
+  +'<p>'+escapa(q.txt)+'</p>'
+  +'<div class="accions">'
+  +'<button class="btn sec" id="bEscolta">🔊 Escolta</button>'
+  +'<button class="btn groc" id="bAj">💡 Ajuda</button>'
+  +'</div><div class="ajuda-txt" id="txtAj"></div></div></div>'
+  +'<div id="fb" class="fb" style="display:none"></div>'
+  +'<div class="escenari" id="esc"></div></div>';
+ $('#bEscolta').onclick=function(){parla(q.txt+(q.aj?' Ajuda: '+q.aj:''))};
+ $('#bAj').onclick=function(){
+  var a=$('#txtAj');a.textContent='💡 '+q.aj;a.classList.add('visible');pistell();
+ };
+ $('#btnIni').onclick=mostraMenu;
+ var esc=$('#esc');
+ esc.innerHTML=q.st();
+ if(q.k==='type'){
+  var hi=escapa(q.mostra).replace(/[^A-Za-z0-9 ]/g,function(m){return '<b>'+m+'</b>'});
+  var chips='';
+  if(q.chips){for(var i=0;i<q.chips.length;i++){chips+='<span>'+escapa(q.chips[i])+'</span>'}}
+  esc.innerHTML='<div class="paper">'
+   +(q.usu?'<div class="usu-chip"><span class="av">M</span><span>Maria</span></div><br>':'')
+   +'<div class="bloq-txt" id="blq-t">'+hi+'</div>'
+   +'<input id="in-txt" type="text" autocomplete="off" spellcheck="false" placeholder="Escriu aquí..." aria-label="text">'
+   +'<div class="ets">'+chips+'</div>'
+   +'<div style="margin-top:16px"><button class="btn" id="b-com">✔️ Comprova</button> '
+   +'<button class="btn sec" id="b-del">🧹 Esborra</button></div>'
+   +'</div>';
+  var inp=$('#in-txt');
+  setTimeout(function(){try{inp.focus()}catch(e){}},150);
+  $('#b-com').onclick=function(){comprova(q,inp)};
+  $('#b-del').onclick=function(){inp.value='';inp.focus()};
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')comprova(q,inp)});
+ }else{
+  if(q.k==='click'){
+   esc.addEventListener('click',function(e){e.preventDefault();if(!loked&&clicGen(esc,e,false))avancar()});
+  }else if(q.k==='dblclick'){
+   esc.addEventListener('click',function(e){
+    e.preventDefault();
+    var r=troca(esc,e.target);
+    if(loked)return;
+    if(r.ok)neutre('Molt a prop! Ara el SEGON clic, ràpid i a sobre de la mateixa icona.');
+    else if(r.wrong)fall(r.msg);
+    else neutre('Fes DOBLE CLIC (dos clics ràpids) sobre la icona indicada.');
+   });
+   esc.addEventListener('dblclick',function(e){e.preventDefault();if(!loked&&clicGen(esc,e,true))avancar()});
+  }else if(q.k==='rclick'){
+   esc.addEventListener('click',function(e){
+    e.preventDefault();
+    if(loked)return;
+    var r=troca(esc,e.target);
+    if(r.ok){neutre('Molt a prop! Això s\'obre amb el botó DRET del ratolí (el de la DRETA). Intent-ho!')}
+    else if(r.wrong)fall(r.msg);
+    else neutre('Fes CLIC DRET (el botó de la DRETA del ratolí) sobre l\'objecte correcte.');
+   });
+   esc.addEventListener('contextmenu',function(e){
+    e.preventDefault();
+    if(loked)return;
+    var r=troca(esc,e.target);
+    if(r.ok)avancar();
+    else if(r.wrong)fall(r.msg);
+    else neutre('Fes CLIC DRET (el botó de la DRETA del ratolí) sobre l\'objecte correcte.');
+   });
+  }else if(q.k==='drag'){
+   muntaDrag(esc);
+  }
+ }
+}
+function comprova(q,inp){
+ var v=inp.value,r=q.resp;
+ var baixa=function(s){return s.toLocaleLowerCase('ca')};
+ var nAcc=function(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'')};
+ var vr=v.trim(),rr=r;
+ var eq=q.sens?(vr===rr):(baixa(vr)===baixa(rr));
+ if(eq){avancar();return}
+ if(vr===''){fall('El requadre està buit: escriu el text i prem Intro ↵.');inp.focus();return}
+ if(!q.sens&&nAcc(baixa(vr))===nAcc(baixa(rr))){
+  fall('Molt a prop! Falta l\'accent (o n\'hi ha un de mal posat). Recorda: PRIMER la tecla de l\'accent (´), DESPRÉS la vocal.');
+  inp.select();return;
+ }
+ if(q.sens&&nAcc(baixa(vr))===nAcc(baixa(rr))){
+  fall('Molt a prop! Han sortit bé, però cal MAJÚSCULES i minúscules exactes! Revisa BLOQ MAYÚS.');
+  inp.select();return;
+ }
+ if(rr.indexOf('@')>=0&&vr.indexOf('@')<0){
+  fall('Encara no hi ha cap @! Manté premut ALT GR i prem la tecla del número 2.');
+  inp.focus();return;
+ }
+ if(rr.indexOf('!')>=0&&vr.indexOf('!')<0){
+  fall('Encara falta el signe !: manté premut SHIFT i prem la tecla del número 1.');
+  inp.focus();return;
+ }
+ fall('Encara no hi som: revisa el text lletra per lletra.');
+ inp.focus();
+}
+function muntaDrag(esc){
+ var clon=null,origen=null,x0=0,y0=0,mogut=false;
+ esc.addEventListener('pointerdown',function(e){
+  if(loked)return;
+  var t=e.target.closest('[data-drag]');
+  if(!t)return;
+  origen=t;x0=e.clientX;y0=e.clientY;mogut=false;
+  try{t.setPointerCapture(e.pointerId)}catch(err){}
+  moventEvent=function(ev){
+   if(!origen)return;
+   if(!mogut&&Math.hypot(ev.clientX-x0,ev.clientY-y0)>6){
+    mogut=true;origen.classList.add('agaf');
+    var rect=origen.getBoundingClientRect();
+    clon=origen.cloneNode(true);
+    clon.className=clon.className.replace('clon','')+' clon';
+    clon.style.width=rect.width+'px';clon.style.height=rect.height+'px';
+    clon.style.left=ev.clientX+'px';clon.style.top=ev.clientY+'px';
+    document.body.appendChild(clon);
+   }
+   if(mogut&&clon){
+    clon.style.left=ev.clientX+'px';clon.style.top=ev.clientY+'px';
+    var sota=document.elementFromPoint(ev.clientX,ev.clientY);
+    var zona=sota&&sota.closest?sota.closest('[data-drop]'):null;
+    var ant=document.querySelectorAll('.sobre-hi');
+    for(var i=0;i<ant.length;i++)ant[i].classList.remove('sobre-hi');
+    if(zona)zona.classList.add('sobre-hi');
+   }
+  };
+  soltEvent=function(ev){
+   if(!origen)return;
+   origen.removeEventListener('pointermove',moventEvent);
+   origen.removeEventListener('pointerup',soltEvent);
+   if(clon){clon.remove();clon=null}
+   var ant=document.querySelectorAll('.sobre-hi');
+   for(var i=0;i<ant.length;i++)ant[i].classList.remove('sobre-hi');
+   if(origen)origen.classList.remove('agaf');
+   var sota=document.elementFromPoint(ev.clientX,ev.clientY);
+   var zona=sota&&sota.closest?sota.closest('[data-drop]'):null;
+   if(mogut){
+    if(zona)avancar();
+    else fall('Deixa\'l anar just a SOBRE la Paperera, amb el botó premut durant tot el camí!');
+   }else{
+    fall('Per arrossegar: manté PREMUT el botó esquerre mentre mous el ratolí, i deixa-lo anar al destí.');
+   }
+   origen=null;mogut=false;
+  };
+  origen.addEventListener('pointermove',moventEvent);
+  origen.addEventListener('pointerup',soltEvent);
+ });
+}
+function final(){
+ var prim=0;
+ for(var i=0;i<resultats.length;i++){if(resultats[i].primera)prim++}
+ var tot=resultats.length;
+ var est=prim/tot>=.9?3:(prim/tot>=.65?2:1);
+ var msg=prim/tot>=.9?'Excel·lent! Ets una persona amb molta destresa digital.'
+  :prim/tot>=.65?'Molt bé! Cada dia més còmode amb l\'ordinador.'
+  :'Ho has aconseguit! Repetir és el camí del mestre.';
+ var lista='';
+ for(var j=0;j<BLOCS.length;j++){
+  var qs=[];for(var k=0;k<resultats.length;k++){if(resultats[k].b===BLOCS[j].id)qs.push(resultats[k])}
+  if(!qs.length)continue;
+  var p=0;for(var m=0;m<qs.length;m++){if(qs[m].primera)p++}
+  lista+='<div><span>'+BLOCS[j].emo+' '+BLOCS[j].nom+'</span><span>'+p+' de '+qs.length+' a la primera</span></div>';
+ }
+ APP.innerHTML=sortida('Final de la pràctica',100)
+  +'<div class="tarja" style="text-align:center">'
+  +'<div class="estres">'+'⭐'.repeat(est)+'<span style="opacity:.25">'+'⭐'.repeat(3-est)+'</span></div>'
+  +'<div class="res-gran">🎉 Has acabat les '+tot+' proves!</div>'
+  +'<p style="font-size:1.1rem">Respostes a la primera: <b>'+prim+' de '+tot+'</b></p>'
+  +'<p style="font-size:1.05rem;font-weight:600;color:#28518f">'+msg+'</p>'
+  +'<div class="llista-blocs">'+lista+'</div>'
+  +'<div style="margin-top:18px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">'
+  +'<button class="btn" id="f_txek">🔁 Torna-ho tot a provar</button>'
+  +'<button class="btn sec" id="f_inici">☰ Torna al menú</button>'
+  +'</div></div>';
+ $('#f_txek').onclick=function(){startGame(null)};
+ $('#f_inici').onclick=mostraMenu;
+ parla('Enhorabona! Has acabat totes les proves. Has resolt '+prim+' de '+tot+' a la primera. '+msg);
+}
+try{if(window.speechSynthesis)speechSynthesis.getVoices()}catch(e){}
+mostraMenu();
+</script>
+</body>
+</html>
