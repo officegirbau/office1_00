@@ -97,11 +97,12 @@ border-radius:16px;box-shadow:0 10px 30px rgba(0,0,20,.4);padding:18px 22px;z-in
 .ctrl.x{color:#c0392b}
 .ctrl:hover{background:#c9d8ef}
 .corp{flex:1;padding:16px;display:flex;align-items:center;justify-content:center;color:#8195b5;font-size:1.1rem;font-weight:600}
-.tec{max-width:880px;margin:0 auto;background:#dde6f2;border-radius:16px;padding:14px;display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:7px}
+.tec{max-width:940px;margin:0 auto;background:#dde6f2;border-radius:16px;padding:14px;display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:7px}
 .tk{background:#fff;border:2px solid #b9c5d8;border-radius:8px;min-height:48px;display:flex;align-items:center;justify-content:center;
 font-size:.82rem;font-weight:700;color:#33455f;position:relative;user-select:none;text-align:center;padding:2px}
 .tk:hover{background:#eaf2ff;border-color:#7fa6dd}
 .tk .sup{position:absolute;top:2px;right:5px;font-size:.68rem;color:#7a8aa5}
+.tk .agr{position:absolute;bottom:2px;left:5px;font-size:.58rem;color:#94a3bd;font-weight:600}
 .tk.xic{font-size:.7rem}
 .ratolla{display:flex;justify-content:center;padding:10px 0}
 .rat-body{position:relative;width:190px;height:270px;background:#f2f5fa;border:4px solid #33455f;border-radius:90px 90px 34px 34px;overflow:hidden}
@@ -354,26 +355,36 @@ function ctrlWin(op){
   +'<div class="ctrl x" '+m3+'>✕</div></div>'
   +'<div class="corp">'+(op.cos||'Aquesta és la finestra del programa.')+'</div></div>';
 }
-function tk(txt,id,sup,estil){
+function tk(txt,id,sup,estil,agr){
  var st=estil?' style="'+estil+'"':'';
  return '<div class="tk"'+st+' '+(id?('id="'+id+'" data-k="1"'):'data-wrong="Aquesta no és la tecla que busquem. Llegeix la instrucció una altra vegada."')+'>'
-  +(sup?'<span class="sup">'+sup+'</span>':'')+(txt||'')+'</div>';
+  +(sup?'<span class="sup">'+sup+'</span>':'')+(agr?'<span class="agr">Alt Gr + '+agr+'</span>':'')+(txt||'')+'</div>';
 }
 function teclat2(){
  var h='';
- h+=tk('Esc')+tk('1','','!')+tk('2','','@')+tk('3','','·')+tk('4','')+tk('5','')+tk('6','')+tk('7','')+tk('8','')+tk('9','')+tk('0')
-   +tk('? \'')+tk('Supr','id-k-supr','', 'font-size:.72rem')+tk('← Retroceso','id-k-back','','grid-column:span 2;font-size:.72rem');
- h+=tk('Tab','','','font-size:.72rem')+tk('Q')+tk('W')+tk('E')+tk('R')+tk('T')+tk('Y')+tk('U')+tk('I')+tk('O')+tk('P')+tk('Ç')
-   +tk('´ <span class="sup">`</span>','id-k-accent')
-   +tk('↵ Intro','id-k-intro','','grid-row:span 2;min-height:100px;align-self:stretch;height:100%');
- h+=tk('Bloq Mayús','id-k-bloq','','grid-column:span 2;font-size:.72rem')
-   +tk('A')+tk('S')+tk('D')+tk('F')+tk('G')+tk('H')+tk('J')+tk('K')+tk('L')+tk('Ñ')+tk('º');
- h+=tk('⇧ Shift','id-k-shift1','maj' ,'grid-column:span 2;font-size:.76rem')
+ h+=tk('Esc','','','font-size:.7rem')
+   +tk('\u00ba','','\u00aa','font-size:.78rem')
+   +tk('1','','!')+tk('2','','"','','@')+tk('3','','\u00b7','','#')+tk('4','','$')+tk('5','','%')+tk('6','','&')+tk('7','','/')+tk('8','','(')+tk('9','',')')+tk('0','','=')
+   +tk('?','','\'','font-size:.78rem')+tk('\u00a1','','\u00bf','font-size:.78rem')
+   +tk('\u2190 Retroceso','id-k-back','','grid-column:span 2;font-size:.72rem');
+ h+=tk('Tab','','','grid-column:span 2;font-size:.7rem')
+   +tk('Q')+tk('W')+tk('E')+tk('R')+tk('T')+tk('Y')+tk('U')+tk('I')+tk('O')+tk('P')
+   +tk('`','','^','font-size:.82rem')+tk('+','','*','font-size:.82rem')
+   +tk('\u21b5 Intro','id-k-intro','','grid-row:span 2;grid-column:span 2;min-height:100px;align-self:stretch;height:100%');
+ h+=tk('Bloq May\u00fas','id-k-bloq','','grid-column:span 2;font-size:.72rem')
+   +tk('A')+tk('S')+tk('D')+tk('F')+tk('G')+tk('H')+tk('J')+tk('K')+tk('L')+tk('\u00d1')
+   +tk('\u00b4','id-k-accent','\u00a8','font-size:.9rem')
+   +tk('\u00c7');
+ h+=tk('\u21e7 Shift','id-k-shift1','','grid-column:span 2;font-size:.72rem')
+   +tk('< >','','','font-size:.78rem')
    +tk('Z')+tk('X')+tk('C')+tk('V')+tk('B')+tk('N')+tk('M')+tk(',')+tk('.')+tk('-')
-   +tk('⇧ Shift','id-k-shift2','','grid-column:span 2;font-size:.76rem');
- h+=tk('Ctrl','id-k-ctrl','','font-size:.72rem')+tk('⊞','','','font-size:.72rem')+tk('Alt','id-k-alt','','font-size:.72rem')
-   +tk('Espai','','','grid-column:span 8;font-size:.72rem')
-   +tk('Alt Gr','id-k-altgr','','font-size:.72rem')+tk('Fn','','','font-size:.72rem')+tk('Ctrl','','','font-size:.72rem');
+   +tk('\u21e7 Shift','id-k-shift2','','grid-column:span 3;font-size:.72rem');
+ h+=tk('Ctrl','id-k-ctrl','','grid-column:span 2;font-size:.7rem')
+   +tk('\u229e','','','font-size:.72rem')+tk('Alt','id-k-alt','','font-size:.7rem')
+   +tk('Espai','','','grid-column:span 7;font-size:.72rem')
+   +tk('Alt Gr','id-k-altgr','','grid-column:span 2;font-size:.7rem')
+   +tk('Supr','id-k-supr','', 'font-size:.66rem')
+   +tk('Ctrl','','','grid-column:span 2;font-size:.7rem');
  return '<div class="tec">'+h+'</div>';
 }
 function arbre(okId){
@@ -631,7 +642,7 @@ var Q=[
  st:teclat2,ph:'#id-k-back'},
 {b:'T3',k:'click',tot:'Supr',
  txt:'Fes clic a la tecla SUPR, que esborra cap ENVANT (el que hi ha a la DRETA del cursor).',
- aj:'Està a damunt a la dreta, al costat de Retroceso. Diu «Supr».',
+ aj:'És a la fila de SOTA, just a la dreta de Alt Gr. Diu «Supr».',
  st:teclat2,ph:'#id-k-supr'},
 {b:'T3',k:'click',tot:'Alt Gr',
  txt:'Per escriure l\'arrova (@) cal la tecla ALT GR. Fes clic sobre Alt Gr.',
@@ -642,8 +653,8 @@ var Q=[
  aj:'És la tecla de la DRETA del teclat, amb la fletxa ↵. Baixa de línia, comença paràgrafs i confirma accions.',
  st:teclat2,ph:'#id-k-intro'},
 {b:'T3',k:'click',tot:'La tecla de l\'accent',
- txt:'Fes clic sobre la tecla de l\'ACCENT, la que està al costat de la Ç.',
- aj:'És una tecla petita amb el signe ´ (i també el ` si prems Shift sobre ella).',
+ txt:'Fes clic sobre la tecla de l\'ACCENT, la que està ENTRE la Ñ i la Ç.',
+ aj:'És una tecla petita amb el signe ´ (i també el ¨ si prems Shift sobre ella). Primer el signe, després la vocal.',
  st:teclat2,ph:'#id-k-accent'},
 {b:'T3',k:'type',tot:'Accent: cafè',
  txt:'Escriu aquesta paraula: cafè   (recorda: PRIMER la tecla de l\'accent, DESPRÉS la vocal).',
