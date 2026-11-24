@@ -215,7 +215,7 @@ var BLOCS=[
  {id:'T7',emo:'🎨',nom:'7. El Paint',des:'Eines de dibuix i guardar el treball'},
  {id:'T8',emo:'📝',nom:'8. El Word',des:'Escriure, guardar i retrobar documents'}
 ];
-var Llista=[],iQ=0,loked=false,errQ=0;
+var Llista=[],iQ=0,loked=false,errQ=0,resultats=[],moventEvent=null,soltEvent=null;
 
 function $(s,c){return (c||document).querySelector(s)}
 function msgOk(){return ELOGIS[iQ%ELOGIS.length]}
@@ -356,7 +356,7 @@ function ctrlWin(op){
 }
 function tk(txt,id,sup,estil){
  var st=estil?' style="'+estil+'"':'';
- return '<div class="tk" '+(id?' id="'+id+'"':'')+' data-wrong="Aquesta no és la tecla que busquem. Llegeix la instrucció una altra vegada."'+st+'>'
+ return '<div class="tk"'+st+' '+(id?('id="'+id+'" data-k="1"'):'data-wrong="Aquesta no és la tecla que busquem. Llegeix la instrucció una altra vegada."')+'>'
   +(sup?'<span class="sup">'+sup+'</span>':'')+(txt||'')+'</div>';
 }
 function teclat2(){
@@ -389,7 +389,7 @@ function ruta(seg,okSeg){
  var h='';
  for(var i=0;i<seg.length;i++){
   var a=(seg[i]===okSeg)?'data-ok="1" id="rt-ok"':'data-wrong="Aquesta part de la ruta és un altre lloc. Mira bé, dins de la ruta blanca de damunt, el nom que demana la instrucció."';
-  h+='<span'+a+'><b>'+seg[i]+'</b></span>'+(i<seg.length-1?'<span class="sep-r">›</span>':'');
+  h+='<span '+a+'><b>'+seg[i]+'</b></span>'+(i<seg.length-1?'<span class="sep-r">›</span>':'');
  }
  return '<div class="ruta">'+h+'</div>';
 }
@@ -920,7 +920,6 @@ function render(){
  };
  $('#btnIni').onclick=mostraMenu;
  var esc=$('#esc');
- esc.innerHTML=q.st();
  if(q.k==='type'){
   var hi=escapa(q.mostra).replace(/[^A-Za-z0-9 ]/g,function(m){return '<b>'+m+'</b>'});
   var chips='';
@@ -939,6 +938,11 @@ function render(){
   $('#b-del').onclick=function(){inp.value='';inp.focus()};
   inp.addEventListener('keydown',function(e){if(e.key==='Enter')comprova(q,inp)});
  }else{
+  esc.innerHTML=q.st();
+  if(q.ph&&q.ph.indexOf('#id-k-')===0)
+   ['#id-k-shift1','#id-k-shift2','#id-k-bloq','#id-k-back','#id-k-supr','#id-k-altgr','#id-k-intro','#id-k-accent'].forEach(function(s){
+    if(s===q.ph||s==='#id-k-shift2'&&q.ph==='#id-k-shift1'){var k=esc.querySelector(s);if(k){k.setAttribute('data-ok','1');k.removeAttribute('data-wrong')}}
+   });
   if(q.k==='click'){
    esc.addEventListener('click',function(e){e.preventDefault();if(!loked&&clicGen(esc,e,false))avancar()});
   }else if(q.k==='dblclick'){
@@ -1042,7 +1046,7 @@ function muntaDrag(esc){
     if(zona)avancar();
     else fall('Deixa\'l anar just a SOBRE la Paperera, amb el botó premut durant tot el camí!');
    }else{
-    fall('Per arrossegar: manté PREMUT el botó esquerre mentre mous el ratolí, i deixa-lo anar al destí.');
+    fall('Per arrossegar: manté PREMUT el botó esquerre mentre mous el ratolí, i deixa\'l anar al destí.');
    }
    origen=null;mogut=false;
   };
