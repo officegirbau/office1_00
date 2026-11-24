@@ -894,7 +894,7 @@ function mostraMenu(){
   this.textContent=document.documentElement.classList.contains('xx')?'🔤 Lletra normal':'🔤 Lletra més gran';
  };
  var bl=document.querySelectorAll('.bloc');
- for(var i=0;i<bl.length;i++){(function(b){b.onclick=function(){startGame(b)}}(bl[i]))}
+ for(var i=0;i<bl.length;i++){(function(b){b.onclick=function(){startGame(b.getAttribute('data-b'))}}(bl[i]))}
 }
 function startGame(b){
  Llista=b?Q.filter(function(z){return z.b===b}):Q.slice();
